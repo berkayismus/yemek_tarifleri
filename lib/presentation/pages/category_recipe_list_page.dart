@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../cubit/recipe_cubit.dart';
 import '../../domain/entities/recipe.dart';
 import '../../i18n/strings.g.dart';
+import '../../../core/utils/slug.dart';
 
 class CategoryRecipeListPage extends StatelessWidget {
   final String category;
@@ -130,7 +131,8 @@ class CategoryRecipeListPage extends StatelessWidget {
                             ),
                           ],
                         ),
-                        onTap: () => context.push('/recipe-detail',
+                        onTap: () => context.push(
+                            '/recipe/${recipeSlug(recipe.name)}',
                             extra: recipe),
                       ),
                     );

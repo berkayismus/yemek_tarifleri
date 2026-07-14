@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../domain/entities/recipe.dart';
 import '../../presentation/pages/discover_page.dart';
@@ -34,9 +35,16 @@ final appRouter = GoRouter(
       ],
     ),
     GoRoute(
-      path: '/recipe-detail',
-      builder: (_, state) =>
-          RecipeDetailPage(recipe: state.extra as Recipe),
+      path: '/recipe/:slug',
+      builder: (_, state) {
+        final recipe = state.extra as Recipe?;
+        if (recipe == null) {
+          return const Scaffold(
+            body: Center(child: Text('Tarif bulunamadı')),
+          );
+        }
+        return RecipeDetailPage(recipe: recipe);
+      },
     ),
     GoRoute(
       path: '/recipe-form',

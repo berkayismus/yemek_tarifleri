@@ -5,6 +5,7 @@ import '../cubit/recipe_cubit.dart';
 import '../../domain/entities/recipe.dart';
 import '../../data/datasources/recipe_remote_datasource.dart';
 import '../../i18n/strings.g.dart';
+import '../../../core/utils/slug.dart';
 
 class DiscoverPage extends StatefulWidget {
   const DiscoverPage({super.key});
@@ -147,7 +148,9 @@ class _DiscoverPageState extends State<DiscoverPage> {
                       final recipe = _results[index];
                       final isSaved = cubit.getById(recipe.id) != null;
                       return InkWell(
-                        onTap: () => context.push('/recipe-detail', extra: recipe),
+                        onTap: () => context.push(
+                            '/recipe/${recipeSlug(recipe.name)}',
+                            extra: recipe),
                         borderRadius: BorderRadius.circular(12),
                         child: Card(
                           clipBehavior: Clip.antiAlias,
