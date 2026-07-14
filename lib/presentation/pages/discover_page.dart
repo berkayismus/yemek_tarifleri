@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../cubit/recipe_cubit.dart';
+import '../cubit/discover_state.dart';
 import '../../domain/entities/recipe.dart';
 import '../../data/datasources/recipe_remote_datasource.dart';
 import '../../i18n/strings.g.dart';
@@ -16,21 +17,39 @@ class DiscoverPage extends StatefulWidget {
 
 class _DiscoverPageState extends State<DiscoverPage> {
   final RecipeRemoteDataSource _remoteDataSource = RecipeRemoteDataSource();
-  final TextEditingController _searchController = TextEditingController();
+  late final TextEditingController _searchController;
   bool _loading = false;
   List<Recipe> _results = [];
+
+  @override
+  void initState() {
+    super.initState();
+    final state = DiscoverState.instance;
+    _searchController = TextEditingController(text: state.searchQuery);
+    _results = state.results;
+    _loading = state.loading;
+  }
+
+  void _persistState() {
+    final state = DiscoverState.instance;
+    state.searchQuery = _searchController.text.trim();
+    state.results = _results;
+    state.loading = _loading;
+  }
 
   Future<void> _search() async {
     final query = _searchController.text.trim();
     if (query.isEmpty) return;
 
     setState(() => _loading = true);
+    _persistState();
     final results = await _remoteDataSource.searchMeals(query);
     if (!mounted) return;
     setState(() {
       _loading = false;
       _results = results;
     });
+    _persistState();
 
     if (results.isEmpty) {
       if (!mounted) return;
@@ -57,6 +76,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
 
   @override
   void dispose() {
+    _persistState();
     _searchController.dispose();
     super.dispose();
   }
@@ -148,8 +168,8 @@ class _DiscoverPageState extends State<DiscoverPage> {
                       final recipe = _results[index];
                       final isSaved = cubit.getById(recipe.id) != null;
                       return InkWell(
-                        onTap: () => context.push(
-                            '/discover/recipe/${recipeSlug(recipe.name)}',
+                        onTap: () => context.go(
+                            '/recipe/${recipeSlug(recipe.name)}',
                             extra: recipe),
                         borderRadius: BorderRadius.circular(12),
                         child: Card(

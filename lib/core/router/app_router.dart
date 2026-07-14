@@ -9,30 +9,6 @@ import '../../presentation/pages/category_list_page.dart';
 import '../../presentation/pages/category_recipe_list_page.dart';
 import '../../presentation/pages/home_page.dart';
 
-final _recipeDetailRoute = GoRoute(
-  path: 'recipe/:slug',
-  builder: (_, state) {
-    final recipe = state.extra as Recipe?;
-    if (recipe == null) {
-      return const Scaffold(
-        body: Center(child: Text('Tarif bulunamadı')),
-      );
-    }
-    return RecipeDetailPage(recipe: recipe);
-  },
-);
-
-final _recipeFormRoute = GoRoute(
-  path: 'recipe-form',
-  builder: (_, state) {
-    final extra = state.extra as Map<String, dynamic>?;
-    return RecipeFormPage(
-      recipe: extra?['recipe'] as Recipe?,
-      defaultCategory: extra?['defaultCategory'] as String?,
-    );
-  },
-);
-
 final appRouter = GoRouter(
   initialLocation: '/discover',
   routes: [
@@ -45,10 +21,6 @@ final appRouter = GoRouter(
             GoRoute(
               path: '/discover',
               builder: (_, _) => const DiscoverPage(),
-              routes: [
-                _recipeDetailRoute,
-                _recipeFormRoute,
-              ],
             ),
           ],
         ),
@@ -57,25 +29,41 @@ final appRouter = GoRouter(
             GoRoute(
               path: '/saved',
               builder: (_, _) => const SavedRecipesPage(),
-              routes: [
-                _recipeDetailRoute,
-                _recipeFormRoute,
-                GoRoute(
-                  path: 'categories',
-                  builder: (_, _) => const CategoryListPage(),
-                  routes: [
-                    GoRoute(
-                      path: ':category',
-                      builder: (_, state) => CategoryRecipeListPage(
-                          category: state.pathParameters['category']!),
-                    ),
-                  ],
-                ),
-              ],
             ),
           ],
         ),
       ],
+    ),
+    GoRoute(
+      path: '/recipe/:slug',
+      builder: (_, state) {
+        final recipe = state.extra as Recipe?;
+        if (recipe == null) {
+          return const Scaffold(
+            body: Center(child: Text('Tarif bulunamadı')),
+          );
+        }
+        return RecipeDetailPage(recipe: recipe);
+      },
+    ),
+    GoRoute(
+      path: '/recipe-form',
+      builder: (_, state) {
+        final extra = state.extra as Map<String, dynamic>?;
+        return RecipeFormPage(
+          recipe: extra?['recipe'] as Recipe?,
+          defaultCategory: extra?['defaultCategory'] as String?,
+        );
+      },
+    ),
+    GoRoute(
+      path: '/categories',
+      builder: (_, _) => const CategoryListPage(),
+    ),
+    GoRoute(
+      path: '/category-recipes',
+      builder: (_, state) =>
+          CategoryRecipeListPage(category: state.extra as String),
     ),
   ],
 );
