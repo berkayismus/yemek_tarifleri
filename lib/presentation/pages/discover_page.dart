@@ -4,6 +4,7 @@ import '../cubit/recipe_cubit.dart';
 import '../../domain/entities/recipe.dart';
 import '../../data/datasources/recipe_remote_datasource.dart';
 import '../../i18n/strings.g.dart';
+import 'recipe_detail_page.dart';
 
 class DiscoverPage extends StatefulWidget {
   const DiscoverPage({super.key});
@@ -145,9 +146,17 @@ class _DiscoverPageState extends State<DiscoverPage> {
                     itemBuilder: (context, index) {
                       final recipe = _results[index];
                       final isSaved = cubit.getById(recipe.id) != null;
-                      return Card(
-                        clipBehavior: Clip.antiAlias,
-                        child: Column(
+                      return InkWell(
+                        onTap: () => Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) =>
+                                RecipeDetailPage(recipe: recipe),
+                          ),
+                        ),
+                        borderRadius: BorderRadius.circular(12),
+                        child: Card(
+                          clipBehavior: Clip.antiAlias,
+                          child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             Expanded(
@@ -223,9 +232,10 @@ class _DiscoverPageState extends State<DiscoverPage> {
                             ),
                           ],
                         ),
-                      );
-                    },
-                  ),
+                      ),
+                    );
+                  },
+                ),
           ),
         ],
       ),
