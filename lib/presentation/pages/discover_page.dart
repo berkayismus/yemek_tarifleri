@@ -137,7 +137,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
-                      childAspectRatio: 0.72,
+                      childAspectRatio: 0.95,
                       crossAxisSpacing: 8,
                       mainAxisSpacing: 8,
                     ),
@@ -151,7 +151,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             Expanded(
-                              flex: 3,
+                              flex: 2,
                               child: recipe.imageUrl != null
                                   ? Image.network(
                                       recipe.imageUrl!,
@@ -169,7 +169,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
                                     ),
                             ),
                             Expanded(
-                              flex: 2,
+                              flex: 1,
                               child: Padding(
                                 padding: const EdgeInsets.all(8),
                                 child: Column(
