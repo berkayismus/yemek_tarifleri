@@ -18,7 +18,7 @@ class _SavedRecipesPageState extends State<SavedRecipesPage> {
   String _searchQuery = '';
 
   void _navigateToForm({Recipe? recipe}) {
-    context.push('recipe-form',
+    context.push('/saved/recipe-form',
         extra: recipe != null ? {'recipe': recipe} : null);
   }
 
@@ -75,7 +75,7 @@ class _SavedRecipesPageState extends State<SavedRecipesPage> {
   void _showRandomLocal() {
     final random = context.read<RecipeCubit>().getRandom();
     if (random != null) {
-      context.push('recipe/${recipeSlug(random.name)}', extra: random);
+      context.push('/saved/recipe/${recipeSlug(random.name)}', extra: random);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(t.saved.noRecipe)),
@@ -109,7 +109,7 @@ class _SavedRecipesPageState extends State<SavedRecipesPage> {
             icon: const Icon(Icons.category),
             tooltip: t.saved.categoriesTooltip,
             onPressed: () {
-              context.push('categories');
+              context.push('/saved/categories');
             },
           ),
           if (hasRecipes)
@@ -309,7 +309,7 @@ class _SavedRecipesPageState extends State<SavedRecipesPage> {
                                   ),
                                   onTap: () =>
                                       context.push(
-                                          'recipe/${recipeSlug(recipe.name)}',
+                                          '/saved/recipe/${recipeSlug(recipe.name)}',
                                           extra: recipe),
                                 ),
                               );

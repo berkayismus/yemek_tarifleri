@@ -149,7 +149,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
                       final isSaved = cubit.getById(recipe.id) != null;
                       return InkWell(
                         onTap: () => context.push(
-                            'recipe/${recipeSlug(recipe.name)}',
+                            '/discover/recipe/${recipeSlug(recipe.name)}',
                             extra: recipe),
                         borderRadius: BorderRadius.circular(12),
                         child: Card(
