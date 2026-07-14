@@ -7,8 +7,9 @@
   },
 
   "recipeList": {
-    "searchHint": "Search recipes in API...",
-    "searchButton": "Search",
+    "searchHint": "Search recipes...",
+    "searchApiButton": "Search API",
+    "noLocalResults": "No recipes match your search.",
     "empty": "No recipes added yet",
     "fetchFromApiButton": "Fetch Random Recipe from API",
     "randomRecipeTooltip": "Suggest Random Recipe",

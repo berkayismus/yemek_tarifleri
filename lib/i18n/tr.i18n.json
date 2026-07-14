@@ -7,8 +7,9 @@
   },
 
   "recipeList": {
-    "searchHint": "API'de tarif ara...",
-    "searchButton": "Ara",
+    "searchHint": "Tariflerde ara...",
+    "searchApiButton": "API'de Ara",
+    "noLocalResults": "Aramanızla eşleşen tarif bulunamadı.",
     "empty": "Henüz tarif eklenmedi",
     "fetchFromApiButton": "API'den Rastgele Tarif Getir",
     "randomRecipeTooltip": "Rastgele Tarif Öner",

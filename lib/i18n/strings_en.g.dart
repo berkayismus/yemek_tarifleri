@@ -64,8 +64,9 @@ class _Translations$recipeList$en implements Translations$recipeList$tr {
 	final TranslationsEn _root; // ignore: unused_field
 
 	// Translations
-	@override String get searchHint => 'Search recipes in API...';
-	@override String get searchButton => 'Search';
+	@override String get searchHint => 'Search recipes...';
+	@override String get searchApiButton => 'Search API';
+	@override String get noLocalResults => 'No recipes match your search.';
 	@override String get empty => 'No recipes added yet';
 	@override String get fetchFromApiButton => 'Fetch Random Recipe from API';
 	@override String get randomRecipeTooltip => 'Suggest Random Recipe';
@@ -160,8 +161,9 @@ extension on TranslationsEn {
 			'appTitle' => 'Food Recipes',
 			'common.cancel' => 'Cancel',
 			'common.delete' => 'Delete',
-			'recipeList.searchHint' => 'Search recipes in API...',
-			'recipeList.searchButton' => 'Search',
+			'recipeList.searchHint' => 'Search recipes...',
+			'recipeList.searchApiButton' => 'Search API',
+			'recipeList.noLocalResults' => 'No recipes match your search.',
 			'recipeList.empty' => 'No recipes added yet',
 			'recipeList.fetchFromApiButton' => 'Fetch Random Recipe from API',
 			'recipeList.randomRecipeTooltip' => 'Suggest Random Recipe',

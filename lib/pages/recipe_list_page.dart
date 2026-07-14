@@ -19,6 +19,7 @@ class _RecipeListPageState extends State<RecipeListPage> {
   final ApiService _apiService = ApiService();
   final TextEditingController _searchController = TextEditingController();
   bool _loading = false;
+  String _searchQuery = '';
 
   void _navigateToForm({Recipe? recipe}) {
     Navigator.of(context).push(
@@ -42,7 +43,8 @@ class _RecipeListPageState extends State<RecipeListPage> {
           ),
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(true),
-            child: Text(t.common.delete, style: const TextStyle(color: Colors.red)),
+            child:
+                Text(t.common.delete, style: const TextStyle(color: Colors.red)),
           ),
         ],
       ),
@@ -96,9 +98,12 @@ class _RecipeListPageState extends State<RecipeListPage> {
       }
     }
     _searchController.clear();
+    setState(() => _searchQuery = '');
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(t.recipeList.addedMultiple(n: results.length, count: results.length))),
+      SnackBar(
+          content: Text(t.recipeList
+              .addedMultiple(n: results.length, count: results.length))),
     );
   }
 
@@ -113,6 +118,13 @@ class _RecipeListPageState extends State<RecipeListPage> {
         SnackBar(content: Text(t.recipeList.noRecipe)),
       );
     }
+  }
+
+  List<Recipe> _filterRecipes(List<Recipe> recipes) {
+    if (_searchQuery.isEmpty) return recipes;
+    return recipes
+        .where((r) => r.name.toLowerCase().contains(_searchQuery))
+        .toList();
   }
 
   @override
@@ -151,6 +163,7 @@ class _RecipeListPageState extends State<RecipeListPage> {
       ),
       body: BlocBuilder<RecipeCubit, List<Recipe>>(
         builder: (context, recipes) {
+          final filtered = _filterRecipes(recipes);
           return Column(
             children: [
               Padding(
@@ -163,11 +176,23 @@ class _RecipeListPageState extends State<RecipeListPage> {
                         decoration: InputDecoration(
                           hintText: t.recipeList.searchHint,
                           prefixIcon: const Icon(Icons.search),
+                          suffixIcon: _searchQuery.isNotEmpty
+                              ? IconButton(
+                                  icon: const Icon(Icons.clear),
+                                  onPressed: () {
+                                    _searchController.clear();
+                                    setState(() => _searchQuery = '');
+                                  },
+                                )
+                              : null,
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12)),
                           contentPadding: const EdgeInsets.symmetric(
                               vertical: 12, horizontal: 12),
                         ),
+                        onChanged: (value) {
+                          setState(() => _searchQuery = value.trim().toLowerCase());
+                        },
                         onSubmitted: (_) => _searchFromApi(),
                       ),
                     ),
@@ -183,7 +208,7 @@ class _RecipeListPageState extends State<RecipeListPage> {
                                 child:
                                     CircularProgressIndicator(strokeWidth: 2),
                               )
-                            : Text(t.recipeList.searchButton),
+                            : Text(t.recipeList.searchApiButton),
                       ),
                     ),
                   ],
@@ -214,94 +239,121 @@ class _RecipeListPageState extends State<RecipeListPage> {
                             OutlinedButton.icon(
                               onPressed:
                                   _loading ? null : _fetchRandomFromApi,
-                              icon:
-                                  const Icon(Icons.cloud_download),
+                              icon: const Icon(Icons.cloud_download),
                               label: Text(t.recipeList.fetchFromApiButton),
                             ),
                           ],
                         ),
                       )
-                    : ListView.builder(
-                        padding: const EdgeInsets.fromLTRB(8, 0, 8, 80),
-                        itemCount: recipes.length,
-                        itemBuilder: (context, index) {
-                          final recipe = recipes[index];
-                          return Card(
-                            margin:
-                                const EdgeInsets.symmetric(vertical: 4),
-                            child: ListTile(
-                              contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 8),
-                              leading: recipe.imageUrl != null
-                                  ? ClipRRect(
-                                      borderRadius:
-                                          BorderRadius.circular(8),
-                                      child: Image.network(
-                                        recipe.imageUrl!,
-                                        width: 56,
-                                        height: 56,
-                                        fit: BoxFit.cover,
-                                        errorBuilder: (_, _, _) =>
-                                            const Icon(Icons.restaurant,
-                                                size: 40),
-                                      ),
-                                    )
-                                  : const Icon(Icons.restaurant, size: 40),
-                              title: Text(recipe.name,
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.w600)),
-                              subtitle: Column(
-                                crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(height: 4),
-                                  Text(recipe.category,
-                                      style: TextStyle(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .primary,
-                                        fontWeight: FontWeight.w500,
-                                      )),
-                                  if (recipe.ingredients.isNotEmpty) ...[
-                                    const SizedBox(height: 4),
-                                    Text(
-                                      recipe.ingredients,
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                          color: Colors.grey.shade700),
-                                    ),
-                                  ],
-                                ],
-                              ),
-                              trailing: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  IconButton(
-                                    icon: const Icon(Icons.edit,
-                                        color: Colors.blueGrey),
-                                    onPressed: () =>
-                                        _navigateToForm(recipe: recipe),
-                                  ),
-                                  IconButton(
-                                    icon: const Icon(Icons.delete,
-                                        color: Colors.red),
-                                    onPressed: () =>
-                                        _deleteRecipe(recipe),
-                                  ),
-                                ],
-                              ),
-                              onTap: () =>
-                                  Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (_) => RecipeDetailPage(
-                                      recipe: recipe),
+                    : filtered.isEmpty
+                        ? Center(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(Icons.search_off,
+                                    size: 64,
+                                    color: Colors.grey.shade400),
+                                const SizedBox(height: 16),
+                                Text(
+                                  t.recipeList.noLocalResults,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleMedium
+                                      ?.copyWith(
+                                          color: Colors.grey.shade600),
                                 ),
-                              ),
+                              ],
                             ),
-                          );
-                        },
-                      ),
+                          )
+                        : ListView.builder(
+                            padding:
+                                const EdgeInsets.fromLTRB(8, 0, 8, 80),
+                            itemCount: filtered.length,
+                            itemBuilder: (context, index) {
+                              final recipe = filtered[index];
+                              return Card(
+                                margin:
+                                    const EdgeInsets.symmetric(vertical: 4),
+                                child: ListTile(
+                                  contentPadding:
+                                      const EdgeInsets.symmetric(
+                                          horizontal: 16, vertical: 8),
+                                  leading: recipe.imageUrl != null
+                                      ? ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          child: Image.network(
+                                            recipe.imageUrl!,
+                                            width: 56,
+                                            height: 56,
+                                            fit: BoxFit.cover,
+                                            errorBuilder: (_, _, _) =>
+                                                const Icon(
+                                                    Icons.restaurant,
+                                                    size: 40),
+                                          ),
+                                        )
+                                      : const Icon(Icons.restaurant,
+                                          size: 40),
+                                  title: Text(recipe.name,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.w600)),
+                                  subtitle: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const SizedBox(height: 4),
+                                      Text(recipe.category,
+                                          style: TextStyle(
+                                            color:
+                                                Theme.of(context)
+                                                    .colorScheme
+                                                    .primary,
+                                            fontWeight: FontWeight.w500,
+                                          )),
+                                      if (recipe
+                                          .ingredients.isNotEmpty) ...[
+                                        const SizedBox(height: 4),
+                                        Text(
+                                          recipe.ingredients,
+                                          maxLines: 2,
+                                          overflow:
+                                              TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                              color: Colors
+                                                  .grey.shade700),
+                                        ),
+                                      ],
+                                    ],
+                                  ),
+                                  trailing: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      IconButton(
+                                        icon: const Icon(Icons.edit,
+                                            color: Colors.blueGrey),
+                                        onPressed: () => _navigateToForm(
+                                            recipe: recipe),
+                                      ),
+                                      IconButton(
+                                        icon: const Icon(Icons.delete,
+                                            color: Colors.red),
+                                        onPressed: () =>
+                                            _deleteRecipe(recipe),
+                                      ),
+                                    ],
+                                  ),
+                                  onTap: () =>
+                                      Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (_) => RecipeDetailPage(
+                                          recipe: recipe),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
               ),
             ],
           );

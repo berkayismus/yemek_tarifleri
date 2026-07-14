@@ -75,11 +75,14 @@ class Translations$recipeList$tr {
 
 	// Translations
 
-	/// tr: 'API'de tarif ara...'
-	String get searchHint => 'API\'de tarif ara...';
+	/// tr: 'Tariflerde ara...'
+	String get searchHint => 'Tariflerde ara...';
 
-	/// tr: 'Ara'
-	String get searchButton => 'Ara';
+	/// tr: 'API'de Ara'
+	String get searchApiButton => 'API\'de Ara';
+
+	/// tr: 'Aramanızla eşleşen tarif bulunamadı.'
+	String get noLocalResults => 'Aramanızla eşleşen tarif bulunamadı.';
 
 	/// tr: 'Henüz tarif eklenmedi'
 	String get empty => 'Henüz tarif eklenmedi';
@@ -252,8 +255,9 @@ extension on Translations {
 			'appTitle' => 'Yemek Tarifleri',
 			'common.cancel' => 'İptal',
 			'common.delete' => 'Sil',
-			'recipeList.searchHint' => 'API\'de tarif ara...',
-			'recipeList.searchButton' => 'Ara',
+			'recipeList.searchHint' => 'Tariflerde ara...',
+			'recipeList.searchApiButton' => 'API\'de Ara',
+			'recipeList.noLocalResults' => 'Aramanızla eşleşen tarif bulunamadı.',
 			'recipeList.empty' => 'Henüz tarif eklenmedi',
 			'recipeList.fetchFromApiButton' => 'API\'den Rastgele Tarif Getir',
 			'recipeList.randomRecipeTooltip' => 'Rastgele Tarif Öner',
