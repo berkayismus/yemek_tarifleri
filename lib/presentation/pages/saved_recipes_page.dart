@@ -5,6 +5,7 @@ import '../cubit/recipe_cubit.dart';
 import '../../domain/entities/recipe.dart';
 import '../../i18n/strings.g.dart';
 import '../../core/utils/slug.dart';
+import '../widgets/language_switch.dart';
 
 class SavedRecipesPage extends StatefulWidget {
   const SavedRecipesPage({super.key});
@@ -107,6 +108,7 @@ class _SavedRecipesPageState extends State<SavedRecipesPage> {
             style: const TextStyle(fontWeight: FontWeight.bold)),
         centerTitle: false,
         actions: [
+          const LanguageSwitch(),
           IconButton(
             icon: const Icon(Icons.category_outlined),
             tooltip: t.saved.categoriesTooltip,

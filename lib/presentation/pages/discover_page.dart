@@ -7,6 +7,7 @@ import '../../domain/entities/recipe.dart';
 import '../../data/datasources/recipe_remote_datasource.dart';
 import '../../i18n/strings.g.dart';
 import '../../core/utils/slug.dart';
+import '../widgets/language_switch.dart';
 
 class DiscoverPage extends StatefulWidget {
   const DiscoverPage({super.key});
@@ -100,6 +101,9 @@ class _DiscoverPageState extends State<DiscoverPage> {
         title: Text(t.discover.title,
             style: const TextStyle(fontWeight: FontWeight.bold)),
         centerTitle: false,
+        actions: const [
+          LanguageSwitch(),
+        ],
       ),
       body: Column(
         children: [
