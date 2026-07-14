@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../cubits/recipe_cubit.dart';
 import '../models/recipe.dart';
 import '../services/api_service.dart';
+import '../i18n/strings.g.dart';
 import 'recipe_form_page.dart';
 import 'recipe_detail_page.dart';
 import 'category_list_page.dart';
@@ -32,17 +33,16 @@ class _RecipeListPageState extends State<RecipeListPage> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Tarifi Sil'),
-        content:
-            Text('"${recipe.name}" tarifini silmek istediğinize emin misiniz?'),
+        title: Text(t.recipeList.deleteTitle),
+        content: Text(t.recipeList.deleteContent(name: recipe.name)),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(false),
-            child: const Text('İptal'),
+            child: Text(t.common.cancel),
           ),
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(true),
-            child: const Text('Sil', style: TextStyle(color: Colors.red)),
+            child: Text(t.common.delete, style: const TextStyle(color: Colors.red)),
           ),
         ],
       ),
@@ -62,12 +62,12 @@ class _RecipeListPageState extends State<RecipeListPage> {
       context.read<RecipeCubit>().addRecipe(meal);
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('"${meal.name}" eklendi!')),
+        SnackBar(content: Text(t.recipeList.added(name: meal.name))),
       );
     } else {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Tarif alınamadı.')),
+        SnackBar(content: Text(t.recipeList.fetchFailed)),
       );
     }
   }
@@ -84,7 +84,7 @@ class _RecipeListPageState extends State<RecipeListPage> {
     if (results.isEmpty) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('"$query" için sonuç bulunamadı.')),
+        SnackBar(content: Text(t.recipeList.noResults(query: query))),
       );
       return;
     }
@@ -98,7 +98,7 @@ class _RecipeListPageState extends State<RecipeListPage> {
     _searchController.clear();
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('${results.length} tarif eklendi.')),
+      SnackBar(content: Text(t.recipeList.addedMultiple(n: results.length, count: results.length))),
     );
   }
 
@@ -110,7 +110,7 @@ class _RecipeListPageState extends State<RecipeListPage> {
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Henüz hiç tarif yok.')),
+        SnackBar(content: Text(t.recipeList.noRecipe)),
       );
     }
   }
@@ -125,28 +125,26 @@ class _RecipeListPageState extends State<RecipeListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Yemek Tarifleri'),
+        title: Text(t.appTitle),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         actions: [
           IconButton(
             icon: const Icon(Icons.category),
-            tooltip: 'Kategoriler',
+            tooltip: t.recipeList.categoriesTooltip,
             onPressed: () {
               Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => const CategoryListPage(),
-                ),
+                MaterialPageRoute(builder: (_) => const CategoryListPage()),
               );
             },
           ),
           IconButton(
             icon: const Icon(Icons.casino),
-            tooltip: 'Rastgele Tarif Öner',
+            tooltip: t.recipeList.randomRecipeTooltip,
             onPressed: _showRandomLocal,
           ),
           IconButton(
             icon: const Icon(Icons.cloud_download),
-            tooltip: 'API\'den Rastgele Tarif Getir',
+            tooltip: t.recipeList.fetchFromApiTooltip,
             onPressed: _loading ? null : _fetchRandomFromApi,
           ),
         ],
@@ -163,7 +161,7 @@ class _RecipeListPageState extends State<RecipeListPage> {
                       child: TextField(
                         controller: _searchController,
                         decoration: InputDecoration(
-                          hintText: 'API\'de tarif ara...',
+                          hintText: t.recipeList.searchHint,
                           prefixIcon: const Icon(Icons.search),
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12)),
@@ -185,7 +183,7 @@ class _RecipeListPageState extends State<RecipeListPage> {
                                 child:
                                     CircularProgressIndicator(strokeWidth: 2),
                               )
-                            : const Text('Ara'),
+                            : Text(t.recipeList.searchButton),
                       ),
                     ),
                   ],
@@ -204,7 +202,7 @@ class _RecipeListPageState extends State<RecipeListPage> {
                                 size: 64, color: Colors.grey.shade400),
                             const SizedBox(height: 16),
                             Text(
-                              'Henüz tarif eklenmedi',
+                              t.recipeList.empty,
                               style: Theme.of(context)
                                   .textTheme
                                   .titleMedium
@@ -218,8 +216,7 @@ class _RecipeListPageState extends State<RecipeListPage> {
                                   _loading ? null : _fetchRandomFromApi,
                               icon:
                                   const Icon(Icons.cloud_download),
-                              label: const Text(
-                                  'API\'den Rastgele Tarif Getir'),
+                              label: Text(t.recipeList.fetchFromApiButton),
                             ),
                           ],
                         ),
@@ -312,7 +309,7 @@ class _RecipeListPageState extends State<RecipeListPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _navigateToForm(),
-        tooltip: 'Yeni Tarif',
+        tooltip: t.recipeList.newRecipeTooltip,
         child: const Icon(Icons.add),
       ),
     );

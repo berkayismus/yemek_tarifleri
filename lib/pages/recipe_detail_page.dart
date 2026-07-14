@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/recipe.dart';
+import '../i18n/strings.g.dart';
 
 class RecipeDetailPage extends StatelessWidget {
   final Recipe recipe;
@@ -37,16 +38,16 @@ class RecipeDetailPage extends StatelessWidget {
                     ],
                   ),
                   const Divider(height: 24),
-                  const Text('Malzemeler',
+                  Text(t.recipeDetail.ingredients,
                       style:
-                          TextStyle(fontWeight: FontWeight.w700, fontSize: 18)),
+                          const TextStyle(fontWeight: FontWeight.w700, fontSize: 18)),
                   const SizedBox(height: 8),
                   Text(recipe.ingredients,
                       style: const TextStyle(fontSize: 15, height: 1.6)),
                   const Divider(height: 24),
-                  const Text('Hazırlanışı',
+                  Text(t.recipeDetail.instructions,
                       style:
-                          TextStyle(fontWeight: FontWeight.w700, fontSize: 18)),
+                          const TextStyle(fontWeight: FontWeight.w700, fontSize: 18)),
                   const SizedBox(height: 8),
                   Text(recipe.instructions,
                       style: const TextStyle(fontSize: 15, height: 1.6)),

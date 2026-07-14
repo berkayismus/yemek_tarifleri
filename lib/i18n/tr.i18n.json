@@ -1,0 +1,70 @@
+{
+  "appTitle": "Yemek Tarifleri",
+
+  "common": {
+    "cancel": "İptal",
+    "delete": "Sil"
+  },
+
+  "recipeList": {
+    "searchHint": "API'de tarif ara...",
+    "searchButton": "Ara",
+    "empty": "Henüz tarif eklenmedi",
+    "fetchFromApiButton": "API'den Rastgele Tarif Getir",
+    "randomRecipeTooltip": "Rastgele Tarif Öner",
+    "fetchFromApiTooltip": "API'den Rastgele Tarif Getir",
+    "categoriesTooltip": "Kategoriler",
+    "newRecipeTooltip": "Yeni Tarif",
+    "added": "$name eklendi!",
+    "fetchFailed": "Tarif alınamadı.",
+    "noResults": "$query için sonuç bulunamadı.",
+    "addedMultiple": {
+      "one": "$count tarif eklendi.",
+      "other": "$count tarif eklendi."
+    },
+    "noRecipe": "Henüz hiç tarif yok.",
+    "deleteTitle": "Tarifi Sil",
+    "deleteContent": "$name tarifini silmek istediğinize emin misiniz?"
+  },
+
+  "recipeForm": {
+    "editTitle": "Tarifi Düzenle",
+    "newTitle": "Yeni Tarif Ekle",
+    "nameLabel": "Yemek Adı",
+    "categoryLabel": "Kategori",
+    "categoryHint": "Örn: Çorba, Ana Yemek, Tatlı",
+    "imageUrlLabel": "Görsel URL (opsiyonel)",
+    "imageUrlHint": "https://...",
+    "ingredientsLabel": "Malzemeler",
+    "instructionsLabel": "Hazırlanışı",
+    "updateButton": "Güncelle",
+    "saveButton": "Kaydet",
+    "nameRequired": "Yemek adı gerekli",
+    "categoryRequired": "Kategori gerekli",
+    "ingredientsRequired": "Malzemeler gerekli",
+    "instructionsRequired": "Hazırlanış gerekli"
+  },
+
+  "categories": {
+    "title": "Kategoriler",
+    "empty": "Henüz kategori yok",
+    "emptyHint": "Yeni tarif ekleyerek kategoriler oluşturabilirsiniz",
+    "recipeCount": {
+      "one": "$count tarif",
+      "other": "$count tarif"
+    }
+  },
+
+  "categoryRecipes": {
+    "empty": "Bu kategoride tarif yok",
+    "addRecipe": "Tarif Ekle",
+    "newRecipeTooltip": "Yeni Tarif",
+    "deleteTitle": "Tarifi Sil",
+    "deleteContent": "$name tarifini silmek istediğinize emin misiniz?"
+  },
+
+  "recipeDetail": {
+    "ingredients": "Malzemeler",
+    "instructions": "Hazırlanışı"
+  }
+}

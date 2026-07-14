@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../cubits/recipe_cubit.dart';
 import '../models/recipe.dart';
+import '../i18n/strings.g.dart';
 
 class RecipeFormPage extends StatefulWidget {
   final Recipe? recipe;
@@ -83,7 +84,9 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(isEditing ? 'Tarifi Düzenle' : 'Yeni Tarif Ekle'),
+        title: Text(isEditing
+            ? t.recipeForm.editTitle
+            : t.recipeForm.newTitle),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -94,54 +97,54 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
             children: [
               TextFormField(
                 controller: _nameController,
-                decoration: const InputDecoration(
-                  labelText: 'Yemek Adı',
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  labelText: t.recipeForm.nameLabel,
+                  border: const OutlineInputBorder(),
                 ),
                 validator: (v) =>
-                    (v == null || v.trim().isEmpty) ? 'Yemek adı gerekli' : null,
+                    (v == null || v.trim().isEmpty) ? t.recipeForm.nameRequired : null,
               ),
               const SizedBox(height: 16),
               TextFormField(
                 controller: _categoryController,
-                decoration: const InputDecoration(
-                  labelText: 'Kategori',
-                  hintText: 'Örn: Çorba, Ana Yemek, Tatlı',
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  labelText: t.recipeForm.categoryLabel,
+                  hintText: t.recipeForm.categoryHint,
+                  border: const OutlineInputBorder(),
                 ),
                 validator: (v) =>
-                    (v == null || v.trim().isEmpty) ? 'Kategori gerekli' : null,
+                    (v == null || v.trim().isEmpty) ? t.recipeForm.categoryRequired : null,
               ),
               const SizedBox(height: 16),
               TextFormField(
                 controller: _imageUrlController,
-                decoration: const InputDecoration(
-                  labelText: 'Görsel URL (opsiyonel)',
-                  hintText: 'https://...',
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  labelText: t.recipeForm.imageUrlLabel,
+                  hintText: t.recipeForm.imageUrlHint,
+                  border: const OutlineInputBorder(),
                 ),
               ),
               const SizedBox(height: 16),
               TextFormField(
                 controller: _ingredientsController,
-                decoration: const InputDecoration(
-                  labelText: 'Malzemeler',
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  labelText: t.recipeForm.ingredientsLabel,
+                  border: const OutlineInputBorder(),
                 ),
                 maxLines: 4,
                 validator: (v) =>
-                    (v == null || v.trim().isEmpty) ? 'Malzemeler gerekli' : null,
+                    (v == null || v.trim().isEmpty) ? t.recipeForm.ingredientsRequired : null,
               ),
               const SizedBox(height: 16),
               TextFormField(
                 controller: _instructionsController,
-                decoration: const InputDecoration(
-                  labelText: 'Hazırlanışı',
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  labelText: t.recipeForm.instructionsLabel,
+                  border: const OutlineInputBorder(),
                 ),
                 maxLines: 6,
                 validator: (v) =>
-                    (v == null || v.trim().isEmpty) ? 'Hazırlanış gerekli' : null,
+                    (v == null || v.trim().isEmpty) ? t.recipeForm.instructionsRequired : null,
               ),
               const SizedBox(height: 24),
               ElevatedButton(
@@ -149,7 +152,9 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
-                child: Text(isEditing ? 'Güncelle' : 'Kaydet'),
+                child: Text(isEditing
+                    ? t.recipeForm.updateButton
+                    : t.recipeForm.saveButton),
               ),
             ],
           ),

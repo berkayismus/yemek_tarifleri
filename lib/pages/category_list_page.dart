@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../cubits/recipe_cubit.dart';
 import '../models/recipe.dart';
+import '../i18n/strings.g.dart';
 import 'category_recipe_list_page.dart';
 
 class CategoryListPage extends StatelessWidget {
@@ -50,7 +51,7 @@ class CategoryListPage extends StatelessWidget {
 
         return Scaffold(
           appBar: AppBar(
-            title: const Text('Kategoriler'),
+            title: Text(t.categories.title),
             backgroundColor: Theme.of(context).colorScheme.inversePrimary,
           ),
           body: categories.isEmpty
@@ -62,7 +63,7 @@ class CategoryListPage extends StatelessWidget {
                           size: 64, color: Colors.grey.shade400),
                       const SizedBox(height: 16),
                       Text(
-                        'Henüz kategori yok',
+                        t.categories.empty,
                         style: Theme.of(context)
                             .textTheme
                             .titleMedium
@@ -70,7 +71,7 @@ class CategoryListPage extends StatelessWidget {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'Yeni tarif ekleyerek kategoriler oluşturabilirsiniz',
+                        t.categories.emptyHint,
                         style: TextStyle(color: Colors.grey.shade500),
                       ),
                     ],
@@ -118,7 +119,7 @@ class CategoryListPage extends StatelessWidget {
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                '$count tarif',
+                                t.categories.recipeCount(n: count, count: count),
                                 style: TextStyle(
                                   color: Colors.grey.shade700,
                                   fontSize: 13,

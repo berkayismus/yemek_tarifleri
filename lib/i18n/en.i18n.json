@@ -1,0 +1,70 @@
+{
+  "appTitle": "Food Recipes",
+
+  "common": {
+    "cancel": "Cancel",
+    "delete": "Delete"
+  },
+
+  "recipeList": {
+    "searchHint": "Search recipes in API...",
+    "searchButton": "Search",
+    "empty": "No recipes added yet",
+    "fetchFromApiButton": "Fetch Random Recipe from API",
+    "randomRecipeTooltip": "Suggest Random Recipe",
+    "fetchFromApiTooltip": "Fetch Random Recipe from API",
+    "categoriesTooltip": "Categories",
+    "newRecipeTooltip": "New Recipe",
+    "added": "$name added!",
+    "fetchFailed": "Could not fetch recipe.",
+    "noResults": "No results found for $query.",
+    "addedMultiple": {
+      "one": "$count recipe added.",
+      "other": "$count recipes added."
+    },
+    "noRecipe": "No recipes yet.",
+    "deleteTitle": "Delete Recipe",
+    "deleteContent": "Are you sure you want to delete $name?"
+  },
+
+  "recipeForm": {
+    "editTitle": "Edit Recipe",
+    "newTitle": "Add New Recipe",
+    "nameLabel": "Recipe Name",
+    "categoryLabel": "Category",
+    "categoryHint": "e.g. Soup, Main Course, Dessert",
+    "imageUrlLabel": "Image URL (optional)",
+    "imageUrlHint": "https://...",
+    "ingredientsLabel": "Ingredients",
+    "instructionsLabel": "Instructions",
+    "updateButton": "Update",
+    "saveButton": "Save",
+    "nameRequired": "Recipe name is required",
+    "categoryRequired": "Category is required",
+    "ingredientsRequired": "Ingredients are required",
+    "instructionsRequired": "Instructions are required"
+  },
+
+  "categories": {
+    "title": "Categories",
+    "empty": "No categories yet",
+    "emptyHint": "You can create categories by adding new recipes",
+    "recipeCount": {
+      "one": "$count recipe",
+      "other": "$count recipes"
+    }
+  },
+
+  "categoryRecipes": {
+    "empty": "No recipes in this category",
+    "addRecipe": "Add Recipe",
+    "newRecipeTooltip": "New Recipe",
+    "deleteTitle": "Delete Recipe",
+    "deleteContent": "Are you sure you want to delete $name?"
+  },
+
+  "recipeDetail": {
+    "ingredients": "Ingredients",
+    "instructions": "Instructions"
+  }
+}

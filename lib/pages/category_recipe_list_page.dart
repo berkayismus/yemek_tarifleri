@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../cubits/recipe_cubit.dart';
 import '../models/recipe.dart';
+import '../i18n/strings.g.dart';
 import 'recipe_form_page.dart';
 import 'recipe_detail_page.dart';
 
@@ -32,18 +33,17 @@ class CategoryRecipeListPage extends StatelessWidget {
           final confirmed = await showDialog<bool>(
             context: context,
             builder: (ctx) => AlertDialog(
-              title: const Text('Tarifi Sil'),
-              content: Text(
-                  '"${recipe.name}" tarifini silmek istediğinize emin misiniz?'),
+              title: Text(t.categoryRecipes.deleteTitle),
+              content: Text(t.categoryRecipes.deleteContent(name: recipe.name)),
               actions: [
                 TextButton(
                   onPressed: () => Navigator.of(ctx).pop(false),
-                  child: const Text('İptal'),
+                  child: Text(t.common.cancel),
                 ),
                 TextButton(
                   onPressed: () => Navigator.of(ctx).pop(true),
                   child:
-                      const Text('Sil', style: TextStyle(color: Colors.red)),
+                      Text(t.common.delete, style: const TextStyle(color: Colors.red)),
                 ),
               ],
             ),
@@ -67,7 +67,7 @@ class CategoryRecipeListPage extends StatelessWidget {
                           size: 64, color: Colors.grey.shade400),
                       const SizedBox(height: 16),
                       Text(
-                        'Bu kategoride tarif yok',
+                        t.categoryRecipes.empty,
                         style: Theme.of(context)
                             .textTheme
                             .titleMedium
@@ -77,7 +77,7 @@ class CategoryRecipeListPage extends StatelessWidget {
                       OutlinedButton.icon(
                         onPressed: () => navigateToForm(),
                         icon: const Icon(Icons.add),
-                        label: const Text('Tarif Ekle'),
+                        label: Text(t.categoryRecipes.addRecipe),
                       ),
                     ],
                   ),
@@ -145,7 +145,7 @@ class CategoryRecipeListPage extends StatelessWidget {
                 ),
           floatingActionButton: FloatingActionButton(
             onPressed: () => navigateToForm(),
-            tooltip: 'Yeni Tarif',
+            tooltip: t.categoryRecipes.newRecipeTooltip,
             child: const Icon(Icons.add),
           ),
         );
