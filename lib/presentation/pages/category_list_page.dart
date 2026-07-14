@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../cubits/recipe_cubit.dart';
-import '../models/recipe.dart';
-import '../i18n/strings.g.dart';
+import '../cubit/recipe_cubit.dart';
+import '../../domain/entities/recipe.dart';
+import '../../i18n/strings.g.dart';
 import 'category_recipe_list_page.dart';
 
 class CategoryListPage extends StatelessWidget {
@@ -97,8 +97,8 @@ class CategoryListPage extends StatelessWidget {
                         onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (_) =>
-                                  CategoryRecipeListPage(category: category),
+                              builder: (_) => CategoryRecipeListPage(
+                                  category: category),
                             ),
                           );
                         },
@@ -119,7 +119,8 @@ class CategoryListPage extends StatelessWidget {
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                t.categories.recipeCount(n: count, count: count),
+                                t.categories
+                                    .recipeCount(n: count, count: count),
                                 style: TextStyle(
                                   color: Colors.grey.shade700,
                                   fontSize: 13,

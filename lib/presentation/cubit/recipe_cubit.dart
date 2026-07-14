@@ -1,24 +1,29 @@
 import 'dart:math';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
-import '../models/recipe.dart';
+import '../../domain/entities/recipe.dart';
+import '../../domain/repositories/recipe_repository.dart';
+import '../../data/models/recipe_model.dart';
 
 class RecipeCubit extends HydratedCubit<List<Recipe>> {
+  final RecipeRepository _repository;
   final _random = Random();
 
-  RecipeCubit() : super([]);
+  RecipeCubit(this._repository) : super([]);
 
   @override
   List<Recipe> fromJson(Map<String, dynamic> json) {
     final list = json['recipes'] as List<dynamic>?;
     if (list == null) return [];
     return list
-        .map((e) => Recipe.fromJson(e as Map<String, dynamic>))
+        .map((e) => RecipeModel.fromJson(e as Map<String, dynamic>))
         .toList();
   }
 
   @override
-  Map<String, dynamic> toJson(List<Recipe> recipes) =>
-      {'recipes': recipes.map((r) => r.toJson()).toList()};
+  Map<String, dynamic> toJson(List<Recipe> recipes) => {
+        'recipes':
+            recipes.map((r) => RecipeModel.fromEntity(r).toJson()).toList(),
+      };
 
   int get _nextId {
     if (state.isEmpty) return 1;
@@ -60,4 +65,9 @@ class RecipeCubit extends HydratedCubit<List<Recipe>> {
 
   List<Recipe> getByCategory(String category) =>
       state.where((r) => r.category == category).toList();
+
+  Future<List<Recipe>> searchApiRecipes(String query) =>
+      _repository.searchRecipes(query);
+
+  Future<Recipe?> getRandomApiRecipe() => _repository.getRandomRecipe();
 }

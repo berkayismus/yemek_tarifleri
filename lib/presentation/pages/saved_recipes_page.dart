@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../cubits/recipe_cubit.dart';
-import '../models/recipe.dart';
-import '../i18n/strings.g.dart';
+import '../cubit/recipe_cubit.dart';
+import '../../domain/entities/recipe.dart';
+import '../../i18n/strings.g.dart';
 import 'recipe_form_page.dart';
 import 'recipe_detail_page.dart';
 import 'category_list_page.dart';
@@ -40,14 +40,39 @@ class _SavedRecipesPageState extends State<SavedRecipesPage> {
           ),
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(true),
-            child:
-                Text(t.common.delete, style: const TextStyle(color: Colors.red)),
+            child: Text(t.common.delete,
+                style: const TextStyle(color: Colors.red)),
           ),
         ],
       ),
     );
     if (confirmed == true) {
       cubit.deleteRecipe(recipe.id);
+    }
+  }
+
+  Future<void> _deleteAll() async {
+    final cubit = context.read<RecipeCubit>();
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(t.saved.deleteAllTitle),
+        content: Text(t.saved.deleteAllContent),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(false),
+            child: Text(t.common.cancel),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(true),
+            child: Text(t.common.delete,
+                style: const TextStyle(color: Colors.red)),
+          ),
+        ],
+      ),
+    );
+    if (confirmed == true) {
+      cubit.deleteAll();
     }
   }
 
@@ -77,30 +102,6 @@ class _SavedRecipesPageState extends State<SavedRecipesPage> {
     super.dispose();
   }
 
-  Future<void> _deleteAll() async {
-    final cubit = context.read<RecipeCubit>();
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: Text(t.saved.deleteAllTitle),
-        content: Text(t.saved.deleteAllContent),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(false),
-            child: Text(t.common.cancel),
-          ),
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(true),
-            child: Text(t.common.delete, style: const TextStyle(color: Colors.red)),
-          ),
-        ],
-      ),
-    );
-    if (confirmed == true) {
-      cubit.deleteAll();
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final hasRecipes = context.watch<RecipeCubit>().state.isNotEmpty;
@@ -115,7 +116,8 @@ class _SavedRecipesPageState extends State<SavedRecipesPage> {
             tooltip: t.saved.categoriesTooltip,
             onPressed: () {
               Navigator.of(context).push(
-                MaterialPageRoute(builder: (_) => const CategoryListPage()),
+                MaterialPageRoute(
+                    builder: (_) => const CategoryListPage()),
               );
             },
           ),
@@ -130,9 +132,11 @@ class _SavedRecipesPageState extends State<SavedRecipesPage> {
                   value: 'deleteAll',
                   child: Row(
                     children: [
-                      const Icon(Icons.delete_sweep, color: Colors.red, size: 20),
+                      const Icon(Icons.delete_sweep,
+                          color: Colors.red, size: 20),
                       const SizedBox(width: 8),
-                      Text(t.saved.deleteAll, style: const TextStyle(color: Colors.red)),
+                      Text(t.saved.deleteAll,
+                          style: const TextStyle(color: Colors.red)),
                     ],
                   ),
                 ),
@@ -229,28 +233,31 @@ class _SavedRecipesPageState extends State<SavedRecipesPage> {
                             ),
                           )
                         : ListView.builder(
-                            padding:
-                                const EdgeInsets.fromLTRB(8, 0, 8, 80),
+                            padding: const EdgeInsets.fromLTRB(
+                                8, 0, 8, 80),
                             itemCount: filtered.length,
                             itemBuilder: (context, index) {
                               final recipe = filtered[index];
                               return Card(
-                                margin:
-                                    const EdgeInsets.symmetric(vertical: 4),
+                                margin: const EdgeInsets.symmetric(
+                                    vertical: 4),
                                 child: ListTile(
                                   contentPadding:
                                       const EdgeInsets.symmetric(
-                                          horizontal: 16, vertical: 8),
+                                          horizontal: 16,
+                                          vertical: 8),
                                   leading: recipe.imageUrl != null
                                       ? ClipRRect(
                                           borderRadius:
-                                              BorderRadius.circular(8),
+                                              BorderRadius.circular(
+                                                  8),
                                           child: Image.network(
                                             recipe.imageUrl!,
                                             width: 56,
                                             height: 56,
                                             fit: BoxFit.cover,
-                                            errorBuilder: (_, _, _) =>
+                                            errorBuilder: (_, _,
+                                                    _) =>
                                                 const Icon(
                                                     Icons.restaurant,
                                                     size: 40),
@@ -260,7 +267,8 @@ class _SavedRecipesPageState extends State<SavedRecipesPage> {
                                           size: 40),
                                   title: Text(recipe.name,
                                       style: const TextStyle(
-                                          fontWeight: FontWeight.w600)),
+                                          fontWeight:
+                                              FontWeight.w600)),
                                   subtitle: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -268,23 +276,23 @@ class _SavedRecipesPageState extends State<SavedRecipesPage> {
                                       const SizedBox(height: 4),
                                       Text(recipe.category,
                                           style: TextStyle(
-                                            color:
-                                                Theme.of(context)
-                                                    .colorScheme
-                                                    .primary,
-                                            fontWeight: FontWeight.w500,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary,
+                                            fontWeight:
+                                                FontWeight.w500,
                                           )),
-                                      if (recipe
-                                          .ingredients.isNotEmpty) ...[
+                                      if (recipe.ingredients
+                                          .isNotEmpty) ...[
                                         const SizedBox(height: 4),
                                         Text(
                                           recipe.ingredients,
                                           maxLines: 2,
-                                          overflow:
-                                              TextOverflow.ellipsis,
+                                          overflow: TextOverflow
+                                              .ellipsis,
                                           style: TextStyle(
-                                              color: Colors
-                                                  .grey.shade700),
+                                              color: Colors.grey
+                                                  .shade700),
                                         ),
                                       ],
                                     ],
@@ -295,11 +303,13 @@ class _SavedRecipesPageState extends State<SavedRecipesPage> {
                                       IconButton(
                                         icon: const Icon(Icons.edit,
                                             color: Colors.blueGrey),
-                                        onPressed: () => _navigateToForm(
-                                            recipe: recipe),
+                                        onPressed: () =>
+                                            _navigateToForm(
+                                                recipe: recipe),
                                       ),
                                       IconButton(
-                                        icon: const Icon(Icons.delete,
+                                        icon: const Icon(
+                                            Icons.delete,
                                             color: Colors.red),
                                         onPressed: () =>
                                             _deleteRecipe(recipe),
@@ -309,8 +319,9 @@ class _SavedRecipesPageState extends State<SavedRecipesPage> {
                                   onTap: () =>
                                       Navigator.of(context).push(
                                     MaterialPageRoute(
-                                      builder: (_) => RecipeDetailPage(
-                                          recipe: recipe),
+                                      builder: (_) =>
+                                          RecipeDetailPage(
+                                              recipe: recipe),
                                     ),
                                   ),
                                 ),

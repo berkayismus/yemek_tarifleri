@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../cubits/recipe_cubit.dart';
-import '../models/recipe.dart';
-import '../i18n/strings.g.dart';
+import '../cubit/recipe_cubit.dart';
+import '../../domain/entities/recipe.dart';
+import '../../i18n/strings.g.dart';
 
 class RecipeFormPage extends StatefulWidget {
   final Recipe? recipe;
@@ -59,12 +59,14 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
     final cubit = context.read<RecipeCubit>();
 
     if (isEditing) {
-      widget.recipe!.name = _nameController.text.trim();
-      widget.recipe!.category = _categoryController.text.trim();
-      widget.recipe!.ingredients = _ingredientsController.text.trim();
-      widget.recipe!.instructions = _instructionsController.text.trim();
-      widget.recipe!.imageUrl = imageUrl.isNotEmpty ? imageUrl : null;
-      cubit.updateRecipe(widget.recipe!.id, widget.recipe!);
+      final updated = widget.recipe!.copyWith(
+        name: _nameController.text.trim(),
+        category: _categoryController.text.trim(),
+        ingredients: _ingredientsController.text.trim(),
+        instructions: _instructionsController.text.trim(),
+        imageUrl: imageUrl.isNotEmpty ? imageUrl : null,
+      );
+      cubit.updateRecipe(widget.recipe!.id, updated);
     } else {
       final recipe = Recipe(
         id: cubit.generateId(),
@@ -84,9 +86,8 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(isEditing
-            ? t.recipeForm.editTitle
-            : t.recipeForm.newTitle),
+        title: Text(
+            isEditing ? t.recipeForm.editTitle : t.recipeForm.newTitle),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -101,8 +102,9 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
                   labelText: t.recipeForm.nameLabel,
                   border: const OutlineInputBorder(),
                 ),
-                validator: (v) =>
-                    (v == null || v.trim().isEmpty) ? t.recipeForm.nameRequired : null,
+                validator: (v) => (v == null || v.trim().isEmpty)
+                    ? t.recipeForm.nameRequired
+                    : null,
               ),
               const SizedBox(height: 16),
               TextFormField(
@@ -112,8 +114,9 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
                   hintText: t.recipeForm.categoryHint,
                   border: const OutlineInputBorder(),
                 ),
-                validator: (v) =>
-                    (v == null || v.trim().isEmpty) ? t.recipeForm.categoryRequired : null,
+                validator: (v) => (v == null || v.trim().isEmpty)
+                    ? t.recipeForm.categoryRequired
+                    : null,
               ),
               const SizedBox(height: 16),
               TextFormField(
@@ -132,8 +135,9 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
                   border: const OutlineInputBorder(),
                 ),
                 maxLines: 4,
-                validator: (v) =>
-                    (v == null || v.trim().isEmpty) ? t.recipeForm.ingredientsRequired : null,
+                validator: (v) => (v == null || v.trim().isEmpty)
+                    ? t.recipeForm.ingredientsRequired
+                    : null,
               ),
               const SizedBox(height: 16),
               TextFormField(
@@ -143,8 +147,9 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
                   border: const OutlineInputBorder(),
                 ),
                 maxLines: 6,
-                validator: (v) =>
-                    (v == null || v.trim().isEmpty) ? t.recipeForm.instructionsRequired : null,
+                validator: (v) => (v == null || v.trim().isEmpty)
+                    ? t.recipeForm.instructionsRequired
+                    : null,
               ),
               const SizedBox(height: 24),
               ElevatedButton(

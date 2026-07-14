@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../cubits/recipe_cubit.dart';
-import '../models/recipe.dart';
-import '../services/api_service.dart';
-import '../i18n/strings.g.dart';
+import '../cubit/recipe_cubit.dart';
+import '../../domain/entities/recipe.dart';
+import '../../data/datasources/recipe_remote_datasource.dart';
+import '../../i18n/strings.g.dart';
 
 class DiscoverPage extends StatefulWidget {
   const DiscoverPage({super.key});
@@ -13,7 +13,7 @@ class DiscoverPage extends StatefulWidget {
 }
 
 class _DiscoverPageState extends State<DiscoverPage> {
-  final ApiService _apiService = ApiService();
+  final RecipeRemoteDataSource _remoteDataSource = RecipeRemoteDataSource();
   final TextEditingController _searchController = TextEditingController();
   bool _loading = false;
   List<Recipe> _results = [];
@@ -23,7 +23,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
     if (query.isEmpty) return;
 
     setState(() => _loading = true);
-    final results = await _apiService.searchMeals(query);
+    final results = await _remoteDataSource.searchMeals(query);
     if (!mounted) return;
     setState(() {
       _loading = false;
@@ -97,7 +97,8 @@ class _DiscoverPageState extends State<DiscoverPage> {
                         ? const SizedBox(
                             width: 18,
                             height: 18,
-                            child: CircularProgressIndicator(strokeWidth: 2),
+                            child:
+                                CircularProgressIndicator(strokeWidth: 2),
                           )
                         : Text(t.discover.searchButton),
                   ),

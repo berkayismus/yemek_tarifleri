@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../i18n/strings.g.dart';
+import '../../i18n/strings.g.dart';
 import 'discover_page.dart';
 import 'saved_recipes_page.dart';
 

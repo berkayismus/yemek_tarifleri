@@ -1,12 +1,9 @@
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
-import 'cubits/recipe_cubit.dart';
 import 'i18n/strings.g.dart';
-import 'pages/home_page.dart';
+import 'app.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,30 +17,5 @@ void main() async {
   );
 
   LocaleSettings.useDeviceLocale();
-  runApp(TranslationProvider(child: const MyApp()));
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => RecipeCubit(),
-      child: MaterialApp(
-        title: t.appTitle,
-        locale: TranslationProvider.of(context).flutterLocale,
-        supportedLocales: AppLocaleUtils.supportedLocales,
-        localizationsDelegates: [
-          ...GlobalMaterialLocalizations.delegates,
-        ],
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.orange),
-          useMaterial3: true,
-        ),
-        home: const HomePage(),
-      ),
-    );
-  }
+  runApp(TranslationProvider(child: const App()));
 }

@@ -1,8 +1,9 @@
 import 'dart:convert';
-import '../models/recipe.dart';
 import 'package:http/http.dart' as http;
+import '../../domain/entities/recipe.dart';
+import '../models/recipe_model.dart';
 
-class ApiService {
+class RecipeRemoteDataSource {
   static const _baseUrl = 'https://www.themealdb.com/api/json/v1/1';
 
   Future<Recipe?> getRandomMeal() async {
@@ -36,30 +37,7 @@ class ApiService {
     }
   }
 
-  Future<List<Recipe>> getByCategory(String category) async {
-    try {
-      final response =
-          await http.get(Uri.parse('$_baseUrl/filter.php?c=$category'));
-      if (response.statusCode != 200) return [];
-
-      final data = jsonDecode(response.body);
-      final meals = data['meals'] as List?;
-      if (meals == null) return [];
-
-      return meals.map((m) => Recipe(
-        id: m['idMeal'],
-        name: m['strMeal'] ?? '',
-        category: category,
-        ingredients: '',
-        instructions: '',
-        imageUrl: m['strMealThumb'],
-      )).toList();
-    } catch (_) {
-      return [];
-    }
-  }
-
-  Recipe _parseMeal(Map<String, dynamic> m) {
+  RecipeModel _parseMeal(Map<String, dynamic> m) {
     final ingredients = StringBuffer();
     for (int i = 1; i <= 20; i++) {
       final ingredient = m['strIngredient$i'] as String?;
@@ -70,7 +48,7 @@ class ApiService {
       }
     }
 
-    return Recipe(
+    return RecipeModel(
       id: m['idMeal'] ?? '',
       name: m['strMeal'] ?? '',
       category: m['strCategory'] ?? '',

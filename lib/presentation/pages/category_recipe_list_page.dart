@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../cubits/recipe_cubit.dart';
-import '../models/recipe.dart';
-import '../i18n/strings.g.dart';
+import '../cubit/recipe_cubit.dart';
+import '../../domain/entities/recipe.dart';
+import '../../i18n/strings.g.dart';
 import 'recipe_form_page.dart';
 import 'recipe_detail_page.dart';
 
@@ -34,7 +34,8 @@ class CategoryRecipeListPage extends StatelessWidget {
             context: context,
             builder: (ctx) => AlertDialog(
               title: Text(t.categoryRecipes.deleteTitle),
-              content: Text(t.categoryRecipes.deleteContent(name: recipe.name)),
+              content: Text(
+                  t.categoryRecipes.deleteContent(name: recipe.name)),
               actions: [
                 TextButton(
                   onPressed: () => Navigator.of(ctx).pop(false),
@@ -42,8 +43,8 @@ class CategoryRecipeListPage extends StatelessWidget {
                 ),
                 TextButton(
                   onPressed: () => Navigator.of(ctx).pop(true),
-                  child:
-                      Text(t.common.delete, style: const TextStyle(color: Colors.red)),
+                  child: Text(t.common.delete,
+                      style: const TextStyle(color: Colors.red)),
                 ),
               ],
             ),
@@ -101,7 +102,8 @@ class CategoryRecipeListPage extends StatelessWidget {
                                   height: 56,
                                   fit: BoxFit.cover,
                                   errorBuilder: (_, _, _) =>
-                                      const Icon(Icons.restaurant, size: 40),
+                                      const Icon(Icons.restaurant,
+                                          size: 40),
                                 ),
                               )
                             : const Icon(Icons.restaurant, size: 40),
