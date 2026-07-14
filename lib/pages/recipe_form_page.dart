@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../cubits/recipe_cubit.dart';
 import '../models/recipe.dart';
-import '../services/recipe_service.dart';
 
 class RecipeFormPage extends StatefulWidget {
-  final RecipeService recipeService;
   final Recipe? recipe;
+  final String? defaultCategory;
 
   const RecipeFormPage({
     super.key,
-    required this.recipeService,
     this.recipe,
+    this.defaultCategory,
   });
 
   @override
@@ -30,8 +31,8 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
   void initState() {
     super.initState();
     _nameController = TextEditingController(text: widget.recipe?.name ?? '');
-    _categoryController =
-        TextEditingController(text: widget.recipe?.category ?? '');
+    _categoryController = TextEditingController(
+        text: widget.recipe?.category ?? widget.defaultCategory ?? '');
     _ingredientsController =
         TextEditingController(text: widget.recipe?.ingredients ?? '');
     _instructionsController =
@@ -54,6 +55,7 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
     if (!_formKey.currentState!.validate()) return;
 
     final imageUrl = _imageUrlController.text.trim();
+    final cubit = context.read<RecipeCubit>();
 
     if (isEditing) {
       widget.recipe!.name = _nameController.text.trim();
@@ -61,17 +63,17 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
       widget.recipe!.ingredients = _ingredientsController.text.trim();
       widget.recipe!.instructions = _instructionsController.text.trim();
       widget.recipe!.imageUrl = imageUrl.isNotEmpty ? imageUrl : null;
-      widget.recipeService.update(widget.recipe!.id, widget.recipe!);
+      cubit.updateRecipe(widget.recipe!.id, widget.recipe!);
     } else {
       final recipe = Recipe(
-        id: widget.recipeService.generateId(),
+        id: cubit.generateId(),
         name: _nameController.text.trim(),
         category: _categoryController.text.trim(),
         ingredients: _ingredientsController.text.trim(),
         instructions: _instructionsController.text.trim(),
         imageUrl: imageUrl.isNotEmpty ? imageUrl : null,
       );
-      widget.recipeService.add(recipe);
+      cubit.addRecipe(recipe);
     }
 
     Navigator.of(context).pop(true);
