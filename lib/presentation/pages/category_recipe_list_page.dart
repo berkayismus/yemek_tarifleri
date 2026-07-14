@@ -52,95 +52,155 @@ class CategoryRecipeListPage extends StatelessWidget {
 
         return Scaffold(
           appBar: AppBar(
-            title: Text(category),
-            backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+            title: Text(category,
+                style: const TextStyle(fontWeight: FontWeight.bold)),
           ),
           body: recipes.isEmpty
               ? Center(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.restaurant_menu,
-                          size: 64, color: Colors.grey.shade400),
-                      const SizedBox(height: 16),
-                      Text(
-                        t.categoryRecipes.empty,
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleMedium
-                            ?.copyWith(color: Colors.grey.shade600),
-                      ),
-                      const SizedBox(height: 20),
-                      OutlinedButton.icon(
-                        onPressed: () => navigateToForm(),
-                        icon: const Icon(Icons.add),
-                        label: Text(t.categoryRecipes.addRecipe),
-                      ),
-                    ],
+                  child: Padding(
+                    padding: const EdgeInsets.all(48),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.restaurant_menu,
+                            size: 72, color: Colors.grey.shade300),
+                        const SizedBox(height: 20),
+                        Text(
+                          t.categoryRecipes.empty,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyLarge
+                              ?.copyWith(color: Colors.grey.shade500),
+                        ),
+                        const SizedBox(height: 16),
+                        OutlinedButton.icon(
+                          onPressed: () => navigateToForm(),
+                          icon: const Icon(Icons.add),
+                          label: Text(t.categoryRecipes.addRecipe),
+                        ),
+                      ],
+                    ),
                   ),
                 )
               : ListView.builder(
-                  padding: const EdgeInsets.fromLTRB(8, 8, 8, 80),
+                  padding: const EdgeInsets.fromLTRB(12, 8, 12, 80),
                   itemCount: recipes.length,
                   itemBuilder: (context, index) {
                     final recipe = recipes[index];
+                    final colorScheme = Theme.of(context).colorScheme;
                     return Card(
-                      margin: const EdgeInsets.symmetric(vertical: 4),
-                      child: ListTile(
-                        contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 8),
-                        leading: recipe.imageUrl != null
-                            ? ClipRRect(
-                                borderRadius: BorderRadius.circular(8),
-                                child: Image.network(
-                                  recipe.imageUrl!,
-                                  width: 56,
-                                  height: 56,
-                                  fit: BoxFit.cover,
-                                  errorBuilder: (_, _, _) =>
-                                      const Icon(Icons.restaurant,
-                                          size: 40),
-                                ),
-                              )
-                            : const Icon(Icons.restaurant, size: 40),
-                        title: Text(recipe.name,
-                            style: const TextStyle(
-                                fontWeight: FontWeight.w600)),
-                        subtitle: recipe.ingredients.isNotEmpty
-                            ? Text(
-                                recipe.ingredients,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    color: Colors.grey.shade700),
-                              )
-                            : null,
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            IconButton(
-                              icon: const Icon(Icons.edit,
-                                  color: Colors.blueGrey),
-                              onPressed: () =>
-                                  navigateToForm(recipe: recipe),
-                            ),
-                            IconButton(
-                              icon: const Icon(Icons.delete,
-                                  color: Colors.red),
-                              onPressed: () => deleteRecipe(recipe),
-                            ),
-                          ],
-                        ),
+                      clipBehavior: Clip.antiAlias,
+                      child: InkWell(
                         onTap: () => context.go(
                             '/recipe/${recipeSlug(recipe.name)}',
                             extra: recipe),
+                        child: Padding(
+                          padding: const EdgeInsets.all(12),
+                          child: Row(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: SizedBox(
+                                  width: 80,
+                                  height: 80,
+                                  child: recipe.imageUrl != null
+                                      ? Image.network(
+                                          recipe.imageUrl!,
+                                          fit: BoxFit.cover,
+                                          errorBuilder: (_, _, _) =>
+                                              Container(
+                                            color: Colors.grey.shade200,
+                                            child: const Icon(
+                                                Icons.restaurant,
+                                                color: Colors.grey),
+                                          ),
+                                        )
+                                      : Container(
+                                          color: Colors.grey.shade200,
+                                          child: const Icon(
+                                              Icons.restaurant,
+                                              color: Colors.grey),
+                                        ),
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      recipe.name,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 15,
+                                      ),
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 6, vertical: 2),
+                                      decoration: BoxDecoration(
+                                        color: colorScheme.primaryContainer,
+                                        borderRadius:
+                                            BorderRadius.circular(4),
+                                      ),
+                                      child: Text(
+                                        recipe.category,
+                                        style: TextStyle(
+                                          color: colorScheme
+                                              .onPrimaryContainer,
+                                          fontSize: 11,
+                                        ),
+                                      ),
+                                    ),
+                                    if (recipe.ingredients.isNotEmpty) ...[
+                                      const SizedBox(height: 4),
+                                      Text(
+                                        recipe.ingredients,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          color: Colors.grey.shade500,
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                    ],
+                                  ],
+                                ),
+                              ),
+                              Column(
+                                children: [
+                                  IconButton(
+                                    icon: const Icon(Icons.edit_outlined,
+                                        size: 20, color: Colors.grey),
+                                    onPressed: () =>
+                                        navigateToForm(recipe: recipe),
+                                    padding: EdgeInsets.zero,
+                                    constraints: const BoxConstraints(
+                                        minWidth: 36, minHeight: 36),
+                                  ),
+                                  IconButton(
+                                    icon: const Icon(Icons.delete_outline,
+                                        size: 20, color: Color(0xFFE57373)),
+                                    onPressed: () => deleteRecipe(recipe),
+                                    padding: EdgeInsets.zero,
+                                    constraints: const BoxConstraints(
+                                        minWidth: 36, minHeight: 36),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     );
                   },
                 ),
           floatingActionButton: FloatingActionButton(
             onPressed: () => navigateToForm(),
-            tooltip: t.categoryRecipes.newRecipeTooltip,
             child: const Icon(Icons.add),
           ),
         );

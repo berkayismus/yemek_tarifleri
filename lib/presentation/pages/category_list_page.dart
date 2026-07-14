@@ -8,10 +8,14 @@ import '../../i18n/strings.g.dart';
 class CategoryListPage extends StatelessWidget {
   const CategoryListPage({super.key});
 
-  String _normalize(String s) =>
-      s.replaceAll('ı', 'i').replaceAll('ü', 'u').replaceAll('ğ', 'g')
-          .replaceAll('ş', 's').replaceAll('ö', 'o').replaceAll('ç', 'c')
-          .toLowerCase();
+  String _normalize(String s) => s
+      .replaceAll('ı', 'i')
+      .replaceAll('ü', 'u')
+      .replaceAll('ğ', 'g')
+      .replaceAll('ş', 's')
+      .replaceAll('ö', 'o')
+      .replaceAll('ç', 'c')
+      .toLowerCase();
 
   IconData _categoryIcon(String category) {
     final n = _normalize(category);
@@ -30,14 +34,14 @@ class CategoryListPage extends StatelessWidget {
 
   Color _categoryColor(int index) {
     const colors = [
-      Color(0xFFFFE0B2),
-      Color(0xFFC8E6C9),
-      Color(0xFFBBDEFB),
-      Color(0xFFE1BEE7),
-      Color(0xFFFFCDD2),
-      Color(0xFFB2DFDB),
+      Color(0xFFFFE0E0),
+      Color(0xFFE8F5E9),
+      Color(0xFFE3F2FD),
+      Color(0xFFF3E5F5),
+      Color(0xFFFFF3E0),
+      Color(0xFFE0F2F1),
       Color(0xFFFFF9C4),
-      Color(0xFFF8BBD0),
+      Color(0xFFFCE4EC),
     ];
     return colors[index % colors.length];
   }
@@ -51,34 +55,37 @@ class CategoryListPage extends StatelessWidget {
 
         return Scaffold(
           appBar: AppBar(
-            title: Text(t.categories.title),
-            backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+            title: Text(t.categories.title,
+                style: const TextStyle(fontWeight: FontWeight.bold)),
           ),
           body: categories.isEmpty
               ? Center(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.category,
-                          size: 64, color: Colors.grey.shade400),
-                      const SizedBox(height: 16),
-                      Text(
-                        t.categories.empty,
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleMedium
-                            ?.copyWith(color: Colors.grey.shade600),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        t.categories.emptyHint,
-                        style: TextStyle(color: Colors.grey.shade500),
-                      ),
-                    ],
+                  child: Padding(
+                    padding: const EdgeInsets.all(48),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.category,
+                            size: 72, color: Colors.grey.shade300),
+                        const SizedBox(height: 20),
+                        Text(
+                          t.categories.empty,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyLarge
+                              ?.copyWith(color: Colors.grey.shade500),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          t.categories.emptyHint,
+                          style: TextStyle(color: Colors.grey.shade400),
+                        ),
+                      ],
+                    ),
                   ),
                 )
               : GridView.builder(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(16),
                   gridDelegate:
                       const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
@@ -92,6 +99,7 @@ class CategoryListPage extends StatelessWidget {
                     final count = cubit.getByCategory(category).length;
                     return Card(
                       color: _categoryColor(index),
+                      elevation: 0,
                       child: InkWell(
                         borderRadius: BorderRadius.circular(12),
                         onTap: () {
@@ -99,17 +107,17 @@ class CategoryListPage extends StatelessWidget {
                               extra: category);
                         },
                         child: Padding(
-                          padding: const EdgeInsets.all(16),
+                          padding: const EdgeInsets.all(20),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(_categoryIcon(category), size: 40),
+                              Icon(_categoryIcon(category), size: 42),
                               const SizedBox(height: 12),
                               Text(
                                 category,
                                 textAlign: TextAlign.center,
                                 style: const TextStyle(
-                                  fontWeight: FontWeight.w600,
+                                  fontWeight: FontWeight.w700,
                                   fontSize: 15,
                                 ),
                               ),
@@ -118,7 +126,7 @@ class CategoryListPage extends StatelessWidget {
                                 t.categories
                                     .recipeCount(n: count, count: count),
                                 style: TextStyle(
-                                  color: Colors.grey.shade700,
+                                  color: Colors.grey.shade600,
                                   fontSize: 13,
                                 ),
                               ),

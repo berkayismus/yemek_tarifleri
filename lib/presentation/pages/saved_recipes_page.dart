@@ -99,18 +99,23 @@ class _SavedRecipesPageState extends State<SavedRecipesPage> {
   @override
   Widget build(BuildContext context) {
     final hasRecipes = context.watch<RecipeCubit>().state.isNotEmpty;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(t.saved.title),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: Text(t.saved.title,
+            style: const TextStyle(fontWeight: FontWeight.bold)),
+        centerTitle: false,
         actions: [
           IconButton(
-            icon: const Icon(Icons.category),
+            icon: const Icon(Icons.category_outlined),
             tooltip: t.saved.categoriesTooltip,
-            onPressed: () {
-              context.go('/categories');
-            },
+            onPressed: () => context.go('/categories'),
+          ),
+          IconButton(
+            icon: const Icon(Icons.casino_outlined),
+            tooltip: t.saved.randomRecipeTooltip,
+            onPressed: _showRandomLocal,
           ),
           if (hasRecipes)
             PopupMenuButton<String>(
@@ -126,18 +131,12 @@ class _SavedRecipesPageState extends State<SavedRecipesPage> {
                       const Icon(Icons.delete_sweep,
                           color: Colors.red, size: 20),
                       const SizedBox(width: 8),
-                      Text(t.saved.deleteAll,
-                          style: const TextStyle(color: Colors.red)),
+                      Text(t.saved.deleteAll),
                     ],
                   ),
                 ),
               ],
             ),
-          IconButton(
-            icon: const Icon(Icons.casino),
-            tooltip: t.saved.randomRecipeTooltip,
-            onPressed: _showRandomLocal,
-          ),
         ],
       ),
       body: BlocBuilder<RecipeCubit, List<Recipe>>(
@@ -146,7 +145,7 @@ class _SavedRecipesPageState extends State<SavedRecipesPage> {
           return Column(
             children: [
               Padding(
-                padding: const EdgeInsets.fromLTRB(12, 8, 12, 4),
+                padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
                 child: TextField(
                   controller: _searchController,
                   decoration: InputDecoration(
@@ -161,10 +160,6 @@ class _SavedRecipesPageState extends State<SavedRecipesPage> {
                             },
                           )
                         : null,
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12)),
-                    contentPadding: const EdgeInsets.symmetric(
-                        vertical: 12, horizontal: 12),
                   ),
                   onChanged: (value) {
                     setState(
@@ -176,28 +171,27 @@ class _SavedRecipesPageState extends State<SavedRecipesPage> {
                 child: recipes.isEmpty
                     ? Center(
                         child: Padding(
-                          padding: const EdgeInsets.all(32),
+                          padding: const EdgeInsets.all(48),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Icon(Icons.bookmark_border,
-                                  size: 64, color: Colors.grey.shade400),
-                              const SizedBox(height: 16),
+                                  size: 72, color: Colors.grey.shade300),
+                              const SizedBox(height: 20),
                               Text(
                                 t.saved.empty,
                                 textAlign: TextAlign.center,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleMedium
-                                    ?.copyWith(
-                                        color: Colors.grey.shade600),
+                                style:
+                                    Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                          color: Colors.grey.shade500,
+                                        ),
                               ),
                               const SizedBox(height: 8),
-                              Text(
-                                t.saved.emptyHint,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.grey.shade500),
+                              TextButton.icon(
+                                onPressed: () =>
+                                    context.go('/discover'),
+                                icon: const Icon(Icons.explore),
+                                label: const Text('Keşfet'),
                               ),
                             ],
                           ),
@@ -225,92 +219,153 @@ class _SavedRecipesPageState extends State<SavedRecipesPage> {
                           )
                         : ListView.builder(
                             padding: const EdgeInsets.fromLTRB(
-                                8, 0, 8, 80),
+                                12, 0, 12, 80),
                             itemCount: filtered.length,
                             itemBuilder: (context, index) {
                               final recipe = filtered[index];
                               return Card(
-                                margin: const EdgeInsets.symmetric(
-                                    vertical: 4),
-                                child: ListTile(
-                                  contentPadding:
-                                      const EdgeInsets.symmetric(
-                                          horizontal: 16,
-                                          vertical: 8),
-                                  leading: recipe.imageUrl != null
-                                      ? ClipRRect(
+                                clipBehavior: Clip.antiAlias,
+                                child: InkWell(
+                                  onTap: () => context.go(
+                                      '/recipe/${recipeSlug(recipe.name)}',
+                                      extra: recipe),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(12),
+                                    child: Row(
+                                      children: [
+                                        ClipRRect(
                                           borderRadius:
-                                              BorderRadius.circular(
-                                                  8),
-                                          child: Image.network(
-                                            recipe.imageUrl!,
-                                            width: 56,
-                                            height: 56,
-                                            fit: BoxFit.cover,
-                                            errorBuilder: (_, _,
-                                                    _) =>
-                                                const Icon(
-                                                    Icons.restaurant,
-                                                    size: 40),
+                                              BorderRadius.circular(10),
+                                          child: SizedBox(
+                                            width: 80,
+                                            height: 80,
+                                            child: recipe.imageUrl !=
+                                                    null
+                                                ? Image.network(
+                                                    recipe.imageUrl!,
+                                                    fit: BoxFit.cover,
+                                                    errorBuilder:
+                                                        (_, _, _) =>
+                                                            Container(
+                                                      color: Colors.grey
+                                                          .shade200,
+                                                      child: const Icon(
+                                                          Icons
+                                                              .restaurant,
+                                                          color: Colors
+                                                              .grey),
+                                                    ),
+                                                  )
+                                                : Container(
+                                                    color: Colors.grey
+                                                        .shade200,
+                                                    child: const Icon(
+                                                        Icons.restaurant,
+                                                        color:
+                                                            Colors.grey),
+                                                  ),
                                           ),
-                                        )
-                                      : const Icon(Icons.restaurant,
-                                          size: 40),
-                                  title: Text(recipe.name,
-                                      style: const TextStyle(
-                                          fontWeight:
-                                              FontWeight.w600)),
-                                  subtitle: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const SizedBox(height: 4),
-                                      Text(recipe.category,
-                                          style: TextStyle(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .primary,
-                                            fontWeight:
-                                                FontWeight.w500,
-                                          )),
-                                      if (recipe.ingredients
-                                          .isNotEmpty) ...[
-                                        const SizedBox(height: 4),
-                                        Text(
-                                          recipe.ingredients,
-                                          maxLines: 2,
-                                          overflow: TextOverflow
-                                              .ellipsis,
-                                          style: TextStyle(
-                                              color: Colors.grey
-                                                  .shade700),
+                                        ),
+                                        const SizedBox(width: 12),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment
+                                                    .start,
+                                            children: [
+                                              Text(
+                                                recipe.name,
+                                                style: const TextStyle(
+                                                  fontWeight:
+                                                      FontWeight.w600,
+                                                  fontSize: 15,
+                                                ),
+                                                maxLines: 2,
+                                                overflow: TextOverflow
+                                                    .ellipsis,
+                                              ),
+                                              const SizedBox(
+                                                  height: 4),
+                                              Container(
+                                                padding:
+                                                    const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 6,
+                                                        vertical: 2),
+                                                decoration:
+                                                    BoxDecoration(
+                                                  color: colorScheme
+                                                      .primaryContainer,
+                                                  borderRadius:
+                                                      BorderRadius
+                                                          .circular(4),
+                                                ),
+                                                child: Text(
+                                                  recipe.category,
+                                                  style: TextStyle(
+                                                    color: colorScheme
+                                                        .onPrimaryContainer,
+                                                    fontSize: 11,
+                                                  ),
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                  height: 4),
+                                              if (recipe.ingredients
+                                                  .isNotEmpty)
+                                                Text(
+                                                  recipe.ingredients,
+                                                  maxLines: 1,
+                                                  overflow: TextOverflow
+                                                      .ellipsis,
+                                                  style: TextStyle(
+                                                    color: Colors.grey
+                                                        .shade500,
+                                                    fontSize: 12,
+                                                  ),
+                                                ),
+                                            ],
+                                          ),
+                                        ),
+                                        Column(
+                                          children: [
+                                            IconButton(
+                                              icon: const Icon(
+                                                  Icons.edit_outlined,
+                                                  size: 20,
+                                                  color:
+                                                      Colors.grey),
+                                              onPressed: () =>
+                                                  _navigateToForm(
+                                                      recipe: recipe),
+                                              padding:
+                                                  EdgeInsets.zero,
+                                              constraints:
+                                                  const BoxConstraints(
+                                                      minWidth: 36,
+                                                      minHeight: 36),
+                                            ),
+                                            IconButton(
+                                              icon: const Icon(
+                                                  Icons
+                                                      .delete_outline,
+                                                  size: 20,
+                                                  color: Color(0xFFE57373)),
+                                              onPressed: () =>
+                                                  _deleteRecipe(
+                                                      recipe),
+                                              padding:
+                                                  EdgeInsets.zero,
+                                              constraints:
+                                                  const BoxConstraints(
+                                                      minWidth: 36,
+                                                      minHeight: 36),
+                                            ),
+                                          ],
                                         ),
                                       ],
-                                    ],
+                                    ),
                                   ),
-                                  trailing: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      IconButton(
-                                        icon: const Icon(Icons.edit,
-                                            color: Colors.blueGrey),
-                                        onPressed: () =>
-                                            _navigateToForm(
-                                                recipe: recipe),
-                                      ),
-                                      IconButton(
-                                        icon: const Icon(
-                                            Icons.delete,
-                                            color: Colors.red),
-                                        onPressed: () =>
-                                            _deleteRecipe(recipe),
-                                      ),
-                                    ],
-                                  ),
-                                  onTap: () =>
-                                      context.go(
-                                          '/recipe/${recipeSlug(recipe.name)}',
-                                          extra: recipe),
                                 ),
                               );
                             },
@@ -322,7 +377,6 @@ class _SavedRecipesPageState extends State<SavedRecipesPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _navigateToForm(),
-        tooltip: t.saved.newRecipeTooltip,
         child: const Icon(Icons.add),
       ),
     );

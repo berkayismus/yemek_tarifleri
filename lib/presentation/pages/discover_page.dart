@@ -54,7 +54,10 @@ class _DiscoverPageState extends State<DiscoverPage> {
     if (results.isEmpty) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(t.discover.noResults(query: query))),
+        SnackBar(
+          content: Text(t.discover.noResults(query: query)),
+          behavior: SnackBarBehavior.floating,
+        ),
       );
     }
   }
@@ -63,14 +66,20 @@ class _DiscoverPageState extends State<DiscoverPage> {
     final cubit = context.read<RecipeCubit>();
     if (cubit.getById(recipe.id) != null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(t.discover.alreadySaved)),
+        SnackBar(
+          content: Text(t.discover.alreadySaved),
+          behavior: SnackBarBehavior.floating,
+        ),
       );
       return;
     }
     cubit.addRecipe(recipe);
     setState(() {});
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(t.discover.saved(name: recipe.name))),
+      SnackBar(
+        content: Text(t.discover.saved(name: recipe.name)),
+        behavior: SnackBarBehavior.floating,
+      ),
     );
   }
 
@@ -84,16 +93,18 @@ class _DiscoverPageState extends State<DiscoverPage> {
   @override
   Widget build(BuildContext context) {
     final cubit = context.watch<RecipeCubit>();
+    final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(t.discover.title),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: Text(t.discover.title,
+            style: const TextStyle(fontWeight: FontWeight.bold)),
+        centerTitle: false,
       ),
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(12, 8, 12, 4),
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
             child: Row(
               children: [
                 Expanded(
@@ -102,10 +113,6 @@ class _DiscoverPageState extends State<DiscoverPage> {
                     decoration: InputDecoration(
                       hintText: t.discover.searchHint,
                       prefixIcon: const Icon(Icons.search),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12)),
-                      contentPadding: const EdgeInsets.symmetric(
-                          vertical: 12, horizontal: 12),
                     ),
                     onSubmitted: (_) => _search(),
                   ),
@@ -115,12 +122,16 @@ class _DiscoverPageState extends State<DiscoverPage> {
                   height: 48,
                   child: ElevatedButton(
                     onPressed: _loading ? null : _search,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: colorScheme.primary,
+                      foregroundColor: colorScheme.onPrimary,
+                    ),
                     child: _loading
                         ? const SizedBox(
-                            width: 18,
-                            height: 18,
+                            width: 20,
+                            height: 20,
                             child:
-                                CircularProgressIndicator(strokeWidth: 2),
+                                CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
                           )
                         : Text(t.discover.searchButton),
                   ),
@@ -135,125 +146,155 @@ class _DiscoverPageState extends State<DiscoverPage> {
             child: _results.isEmpty && !_loading
                 ? Center(
                     child: Padding(
-                      padding: const EdgeInsets.all(32),
+                      padding: const EdgeInsets.all(48),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Icon(Icons.travel_explore,
-                              size: 64, color: Colors.grey.shade400),
-                          const SizedBox(height: 16),
+                              size: 72, color: Colors.grey.shade300),
+                          const SizedBox(height: 20),
                           Text(
                             t.discover.searchPrompt,
                             textAlign: TextAlign.center,
                             style: Theme.of(context)
                                 .textTheme
-                                .titleMedium
-                                ?.copyWith(color: Colors.grey.shade600),
+                                .bodyLarge
+                                ?.copyWith(color: Colors.grey.shade500),
                           ),
                         ],
                       ),
                     ),
                   )
                 : GridView.builder(
-                    padding: const EdgeInsets.fromLTRB(8, 4, 8, 16),
+                    padding: const EdgeInsets.fromLTRB(12, 4, 12, 16),
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
-                      childAspectRatio: 0.95,
-                      crossAxisSpacing: 8,
-                      mainAxisSpacing: 8,
+                      childAspectRatio: 0.72,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
                     ),
                     itemCount: _results.length,
                     itemBuilder: (context, index) {
                       final recipe = _results[index];
                       final isSaved = cubit.getById(recipe.id) != null;
-                      return InkWell(
+                      return GestureDetector(
                         onTap: () => context.go(
                             '/recipe/${recipeSlug(recipe.name)}',
                             extra: recipe),
-                        borderRadius: BorderRadius.circular(12),
                         child: Card(
                           clipBehavior: Clip.antiAlias,
+                          elevation: 2,
                           child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Expanded(
-                              flex: 2,
-                              child: recipe.imageUrl != null
-                                  ? Image.network(
-                                      recipe.imageUrl!,
-                                      fit: BoxFit.cover,
-                                      errorBuilder: (_, _, _) => Container(
-                                        color: Colors.grey.shade200,
-                                        child: const Icon(Icons.restaurant,
-                                            size: 40),
+                            crossAxisAlignment:
+                                CrossAxisAlignment.stretch,
+                            children: [
+                              Expanded(
+                                flex: 3,
+                                child: Stack(
+                                  fit: StackFit.expand,
+                                  children: [
+                                    recipe.imageUrl != null
+                                        ? Image.network(
+                                            recipe.imageUrl!,
+                                            fit: BoxFit.cover,
+                                            errorBuilder: (_, _, _) =>
+                                                Container(
+                                              color: Colors.grey.shade200,
+                                              child: const Icon(
+                                                  Icons.restaurant,
+                                                  size: 40,
+                                                  color: Colors.grey),
+                                            ),
+                                          )
+                                        : Container(
+                                            color: Colors.grey.shade200,
+                                            child: const Icon(
+                                                Icons.restaurant,
+                                                size: 40,
+                                                color: Colors.grey),
+                                          ),
+                                    Positioned(
+                                      top: 6,
+                                      right: 6,
+                                      child: Material(
+                                        color: Colors.white.withValues(alpha: 0.9),
+                                        borderRadius:
+                                            BorderRadius.circular(20),
+                                        child: InkWell(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          onTap: () =>
+                                              _saveRecipe(recipe),
+                                          child: Padding(
+                                            padding:
+                                                const EdgeInsets.all(6),
+                                            child: Icon(
+                                              isSaved
+                                                  ? Icons.bookmark
+                                                  : Icons.bookmark_border,
+                                              size: 20,
+                                              color: isSaved
+                                                  ? colorScheme.primary
+                                                  : Colors.grey.shade700,
+                                            ),
+                                          ),
+                                        ),
                                       ),
-                                    )
-                                  : Container(
-                                      color: Colors.grey.shade200,
-                                      child: const Icon(Icons.restaurant,
-                                          size: 40),
                                     ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8),
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(
+                                    10, 8, 10, 10),
                                 child: Column(
                                   crossAxisAlignment:
                                       CrossAxisAlignment.start,
                                   children: [
                                     Text(
                                       recipe.name,
-                                      maxLines: 1,
+                                      maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
                                       style: const TextStyle(
                                         fontWeight: FontWeight.w600,
                                         fontSize: 13,
+                                        height: 1.3,
                                       ),
                                     ),
-                                    const SizedBox(height: 2),
-                                    Text(
-                                      recipe.category,
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .primary,
-                                        fontSize: 12,
+                                    const SizedBox(height: 4),
+                                    Container(
+                                      padding:
+                                          const EdgeInsets.symmetric(
+                                              horizontal: 6,
+                                              vertical: 2),
+                                      decoration: BoxDecoration(
+                                        color: colorScheme
+                                            .primaryContainer,
+                                        borderRadius:
+                                            BorderRadius.circular(4),
                                       ),
-                                    ),
-                                    const Spacer(),
-                                    Align(
-                                      alignment: Alignment.centerRight,
-                                      child: IconButton(
-                                        icon: Icon(
-                                          isSaved
-                                              ? Icons.bookmark
-                                              : Icons.bookmark_border,
-                                          color: isSaved
-                                              ? Theme.of(context)
-                                                  .colorScheme
-                                                  .primary
-                                              : null,
+                                      child: Text(
+                                        recipe.category,
+                                        maxLines: 1,
+                                        overflow:
+                                            TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          color: colorScheme
+                                              .onPrimaryContainer,
+                                          fontSize: 11,
                                         ),
-                                        tooltip: t.discover.saveTooltip,
-                                        onPressed: isSaved
-                                            ? null
-                                            : () => _saveRecipe(recipe),
                                       ),
                                     ),
                                   ],
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                    );
-                  },
-                ),
+                      );
+                    },
+                  ),
           ),
         ],
       ),

@@ -9,55 +9,94 @@ class RecipeDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
-      appBar: AppBar(title: Text(recipe.name)),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            if (recipe.imageUrl != null)
-              AspectRatio(
-                aspectRatio: 16 / 10,
-                child: Image.network(recipe.imageUrl!, fit: BoxFit.cover),
-              ),
-            Padding(
-              padding: const EdgeInsets.all(16),
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            expandedHeight: 280,
+            pinned: true,
+            flexibleSpace: FlexibleSpaceBar(
+              background: recipe.imageUrl != null
+                  ? Image.network(recipe.imageUrl!, fit: BoxFit.cover,
+                      errorBuilder: (_, _, _) => Container(
+                            color: colorScheme.primaryContainer,
+                          ))
+                  : Container(color: colorScheme.primaryContainer),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(20, 24, 20, 24),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      const Icon(Icons.category, size: 20),
-                      const SizedBox(width: 6),
-                      Text(recipe.category,
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.primary,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16,
-                          )),
-                    ],
+                  Text(
+                    recipe.name,
+                    style: const TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      height: 1.2,
+                    ),
                   ),
-                  const Divider(height: 24),
-                  Text(t.recipeDetail.ingredients,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.w700, fontSize: 18)),
-                  const SizedBox(height: 8),
-                  Text(recipe.ingredients,
-                      style:
-                          const TextStyle(fontSize: 15, height: 1.6)),
-                  const Divider(height: 24),
-                  Text(t.recipeDetail.instructions,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.w700, fontSize: 18)),
-                  const SizedBox(height: 8),
-                  Text(recipe.instructions,
-                      style:
-                          const TextStyle(fontSize: 15, height: 1.6)),
+                  const SizedBox(height: 10),
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: colorScheme.primaryContainer,
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: Text(
+                      recipe.category,
+                      style: TextStyle(
+                        color: colorScheme.onPrimaryContainer,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 13,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 28),
+                  Text(
+                    t.recipeDetail.ingredients,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    recipe.ingredients,
+                    style: TextStyle(
+                      fontSize: 15,
+                      height: 1.7,
+                      color: Colors.grey.shade800,
+                    ),
+                  ),
+                  const SizedBox(height: 28),
+                  Text(
+                    t.recipeDetail.instructions,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    recipe.instructions,
+                    style: TextStyle(
+                      fontSize: 15,
+                      height: 1.7,
+                      color: Colors.grey.shade800,
+                    ),
+                  ),
+                  const SizedBox(height: 40),
                 ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
