@@ -95,8 +95,7 @@ class CategoryListPage extends StatelessWidget {
                       child: InkWell(
                         borderRadius: BorderRadius.circular(12),
                         onTap: () {
-                          context.push('/category-recipes',
-                              extra: category);
+                          context.push(category);
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(16),

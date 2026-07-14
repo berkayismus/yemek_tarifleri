@@ -19,7 +19,7 @@ class CategoryRecipeListPage extends StatelessWidget {
         final recipes = cubit.getByCategory(category);
 
         void navigateToForm({Recipe? recipe}) {
-          context.push('/recipe-form',
+          context.push('/saved/recipe-form',
               extra: recipe != null
                   ? {'recipe': recipe}
                   : {'defaultCategory': category});
@@ -131,8 +131,8 @@ class CategoryRecipeListPage extends StatelessWidget {
                             ),
                           ],
                         ),
-                        onTap: () => context.go(
-                            '/recipe/${recipeSlug(recipe.name)}',
+                        onTap: () => context.push(
+                            '/saved/recipe/${recipeSlug(recipe.name)}',
                             extra: recipe),
                       ),
                     );
