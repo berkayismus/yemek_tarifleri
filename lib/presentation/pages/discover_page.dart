@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import '../cubit/recipe_cubit.dart';
 import '../../domain/entities/recipe.dart';
 import '../../data/datasources/recipe_remote_datasource.dart';
 import '../../i18n/strings.g.dart';
-import 'recipe_detail_page.dart';
 
 class DiscoverPage extends StatefulWidget {
   const DiscoverPage({super.key});
@@ -147,12 +147,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
                       final recipe = _results[index];
                       final isSaved = cubit.getById(recipe.id) != null;
                       return InkWell(
-                        onTap: () => Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) =>
-                                RecipeDetailPage(recipe: recipe),
-                          ),
-                        ),
+                        onTap: () => context.push('/recipe-detail', extra: recipe),
                         borderRadius: BorderRadius.circular(12),
                         child: Card(
                           clipBehavior: Clip.antiAlias,

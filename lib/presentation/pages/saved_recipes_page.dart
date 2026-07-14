@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import '../cubit/recipe_cubit.dart';
 import '../../domain/entities/recipe.dart';
 import '../../i18n/strings.g.dart';
-import 'recipe_form_page.dart';
-import 'recipe_detail_page.dart';
-import 'category_list_page.dart';
 
 class SavedRecipesPage extends StatefulWidget {
   const SavedRecipesPage({super.key});
@@ -19,11 +17,8 @@ class _SavedRecipesPageState extends State<SavedRecipesPage> {
   String _searchQuery = '';
 
   void _navigateToForm({Recipe? recipe}) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (_) => RecipeFormPage(recipe: recipe),
-      ),
-    );
+    context.push('/recipe-form',
+        extra: recipe != null ? {'recipe': recipe} : null);
   }
 
   Future<void> _deleteRecipe(Recipe recipe) async {
@@ -79,9 +74,7 @@ class _SavedRecipesPageState extends State<SavedRecipesPage> {
   void _showRandomLocal() {
     final random = context.read<RecipeCubit>().getRandom();
     if (random != null) {
-      Navigator.of(context).push(
-        MaterialPageRoute(builder: (_) => RecipeDetailPage(recipe: random)),
-      );
+      context.push('/recipe-detail', extra: random);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(t.saved.noRecipe)),
@@ -115,10 +108,7 @@ class _SavedRecipesPageState extends State<SavedRecipesPage> {
             icon: const Icon(Icons.category),
             tooltip: t.saved.categoriesTooltip,
             onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                    builder: (_) => const CategoryListPage()),
-              );
+              context.push('/categories');
             },
           ),
           if (hasRecipes)
@@ -317,13 +307,8 @@ class _SavedRecipesPageState extends State<SavedRecipesPage> {
                                     ],
                                   ),
                                   onTap: () =>
-                                      Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (_) =>
-                                          RecipeDetailPage(
-                                              recipe: recipe),
-                                    ),
-                                  ),
+                                      context.push('/recipe-detail',
+                                          extra: recipe),
                                 ),
                               );
                             },

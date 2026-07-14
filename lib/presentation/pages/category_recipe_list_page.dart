@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import '../cubit/recipe_cubit.dart';
 import '../../domain/entities/recipe.dart';
 import '../../i18n/strings.g.dart';
-import 'recipe_form_page.dart';
-import 'recipe_detail_page.dart';
 
 class CategoryRecipeListPage extends StatelessWidget {
   final String category;
@@ -19,14 +18,10 @@ class CategoryRecipeListPage extends StatelessWidget {
         final recipes = cubit.getByCategory(category);
 
         void navigateToForm({Recipe? recipe}) {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (_) => RecipeFormPage(
-                recipe: recipe,
-                defaultCategory: recipe == null ? category : null,
-              ),
-            ),
-          );
+          context.push('/recipe-form',
+              extra: recipe != null
+                  ? {'recipe': recipe}
+                  : {'defaultCategory': category});
         }
 
         Future<void> deleteRecipe(Recipe recipe) async {
@@ -135,12 +130,8 @@ class CategoryRecipeListPage extends StatelessWidget {
                             ),
                           ],
                         ),
-                        onTap: () => Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) =>
-                                RecipeDetailPage(recipe: recipe),
-                          ),
-                        ),
+                        onTap: () => context.push('/recipe-detail',
+                            extra: recipe),
                       ),
                     );
                   },

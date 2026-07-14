@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import '../cubit/recipe_cubit.dart';
 import '../../domain/entities/recipe.dart';
 import '../../i18n/strings.g.dart';
@@ -79,7 +80,7 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
       cubit.addRecipe(recipe);
     }
 
-    Navigator.of(context).pop(true);
+    context.pop(true);
   }
 
   @override

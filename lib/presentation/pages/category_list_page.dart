@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import '../cubit/recipe_cubit.dart';
 import '../../domain/entities/recipe.dart';
 import '../../i18n/strings.g.dart';
-import 'category_recipe_list_page.dart';
 
 class CategoryListPage extends StatelessWidget {
   const CategoryListPage({super.key});
@@ -95,12 +95,8 @@ class CategoryListPage extends StatelessWidget {
                       child: InkWell(
                         borderRadius: BorderRadius.circular(12),
                         onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (_) => CategoryRecipeListPage(
-                                  category: category),
-                            ),
-                          );
+                          context.push('/category-recipes',
+                              extra: category);
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(16),
