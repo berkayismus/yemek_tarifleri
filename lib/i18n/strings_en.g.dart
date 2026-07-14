@@ -89,6 +89,9 @@ class _Translations$saved$en implements Translations$saved$tr {
 	@override String get noResults => 'No recipes match your search.';
 	@override String get empty => 'No saved recipes yet';
 	@override String get emptyHint => 'Use the Discover tab to search and save recipes';
+	@override String get deleteAll => 'Delete All';
+	@override String get deleteAllTitle => 'Delete All Recipes';
+	@override String get deleteAllContent => 'Are you sure you want to delete all saved recipes?';
 	@override String get randomRecipeTooltip => 'Suggest Random Recipe';
 	@override String get categoriesTooltip => 'Categories';
 	@override String get newRecipeTooltip => 'New Recipe';
@@ -198,6 +201,9 @@ extension on TranslationsEn {
 			'saved.noResults' => 'No recipes match your search.',
 			'saved.empty' => 'No saved recipes yet',
 			'saved.emptyHint' => 'Use the Discover tab to search and save recipes',
+			'saved.deleteAll' => 'Delete All',
+			'saved.deleteAllTitle' => 'Delete All Recipes',
+			'saved.deleteAllContent' => 'Are you sure you want to delete all saved recipes?',
 			'saved.randomRecipeTooltip' => 'Suggest Random Recipe',
 			'saved.categoriesTooltip' => 'Categories',
 			'saved.newRecipeTooltip' => 'New Recipe',

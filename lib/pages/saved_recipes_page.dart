@@ -77,8 +77,34 @@ class _SavedRecipesPageState extends State<SavedRecipesPage> {
     super.dispose();
   }
 
+  Future<void> _deleteAll() async {
+    final cubit = context.read<RecipeCubit>();
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(t.saved.deleteAllTitle),
+        content: Text(t.saved.deleteAllContent),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(false),
+            child: Text(t.common.cancel),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(true),
+            child: Text(t.common.delete, style: const TextStyle(color: Colors.red)),
+          ),
+        ],
+      ),
+    );
+    if (confirmed == true) {
+      cubit.deleteAll();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final hasRecipes = context.watch<RecipeCubit>().state.isNotEmpty;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(t.saved.title),
@@ -93,6 +119,25 @@ class _SavedRecipesPageState extends State<SavedRecipesPage> {
               );
             },
           ),
+          if (hasRecipes)
+            PopupMenuButton<String>(
+              icon: const Icon(Icons.more_vert),
+              onSelected: (value) {
+                if (value == 'deleteAll') _deleteAll();
+              },
+              itemBuilder: (_) => [
+                PopupMenuItem(
+                  value: 'deleteAll',
+                  child: Row(
+                    children: [
+                      const Icon(Icons.delete_sweep, color: Colors.red, size: 20),
+                      const SizedBox(width: 8),
+                      Text(t.saved.deleteAll, style: const TextStyle(color: Colors.red)),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           IconButton(
             icon: const Icon(Icons.casino),
             tooltip: t.saved.randomRecipeTooltip,

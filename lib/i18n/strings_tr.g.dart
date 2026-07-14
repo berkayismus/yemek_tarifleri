@@ -128,6 +128,15 @@ class Translations$saved$tr {
 	/// tr: 'Keşfet sekmesinden tarif arayıp kaydedebilirsiniz'
 	String get emptyHint => 'Keşfet sekmesinden tarif arayıp kaydedebilirsiniz';
 
+	/// tr: 'Tümünü Sil'
+	String get deleteAll => 'Tümünü Sil';
+
+	/// tr: 'Tüm Tarifleri Sil'
+	String get deleteAllTitle => 'Tüm Tarifleri Sil';
+
+	/// tr: 'Tüm kaydedilmiş tarifleri silmek istediğinize emin misiniz?'
+	String get deleteAllContent => 'Tüm kaydedilmiş tarifleri silmek istediğinize emin misiniz?';
+
 	/// tr: 'Rastgele Tarif Öner'
 	String get randomRecipeTooltip => 'Rastgele Tarif Öner';
 
@@ -304,6 +313,9 @@ extension on Translations {
 			'saved.noResults' => 'Aramanızla eşleşen tarif bulunamadı.',
 			'saved.empty' => 'Henüz kaydedilmiş tarif yok',
 			'saved.emptyHint' => 'Keşfet sekmesinden tarif arayıp kaydedebilirsiniz',
+			'saved.deleteAll' => 'Tümünü Sil',
+			'saved.deleteAllTitle' => 'Tüm Tarifleri Sil',
+			'saved.deleteAllContent' => 'Tüm kaydedilmiş tarifleri silmek istediğinize emin misiniz?',
 			'saved.randomRecipeTooltip' => 'Rastgele Tarif Öner',
 			'saved.categoriesTooltip' => 'Kategoriler',
 			'saved.newRecipeTooltip' => 'Yeni Tarif',

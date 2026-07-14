@@ -40,6 +40,8 @@ class RecipeCubit extends HydratedCubit<List<Recipe>> {
   void deleteRecipe(String id) =>
       emit(state.where((r) => r.id != id).toList());
 
+  void deleteAll() => emit([]);
+
   Recipe? getById(String id) {
     try {
       return state.firstWhere((r) => r.id == id);
