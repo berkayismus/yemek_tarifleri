@@ -5,7 +5,7 @@ import '../cubit/recipe_cubit.dart';
 import '../../domain/entities/recipe.dart';
 import '../../data/datasources/recipe_remote_datasource.dart';
 import '../../i18n/strings.g.dart';
-import '../../../core/utils/slug.dart';
+import '../../core/utils/slug.dart';
 
 class DiscoverPage extends StatefulWidget {
   const DiscoverPage({super.key});
