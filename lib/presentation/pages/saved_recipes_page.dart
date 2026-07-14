@@ -75,7 +75,7 @@ class _SavedRecipesPageState extends State<SavedRecipesPage> {
   void _showRandomLocal() {
     final random = context.read<RecipeCubit>().getRandom();
     if (random != null) {
-      context.push('/recipe/${recipeSlug(random.name)}', extra: random);
+      context.go('/recipe/${recipeSlug(random.name)}', extra: random);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(t.saved.noRecipe)),
@@ -308,7 +308,7 @@ class _SavedRecipesPageState extends State<SavedRecipesPage> {
                                     ],
                                   ),
                                   onTap: () =>
-                                      context.push(
+                                      context.go(
                                           '/recipe/${recipeSlug(recipe.name)}',
                                           extra: recipe),
                                 ),

@@ -131,7 +131,7 @@ class CategoryRecipeListPage extends StatelessWidget {
                             ),
                           ],
                         ),
-                        onTap: () => context.push(
+                        onTap: () => context.go(
                             '/recipe/${recipeSlug(recipe.name)}',
                             extra: recipe),
                       ),
