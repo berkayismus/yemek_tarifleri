@@ -6,7 +6,7 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'cubits/recipe_cubit.dart';
 import 'i18n/strings.g.dart';
-import 'pages/recipe_list_page.dart';
+import 'pages/home_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
     return BlocProvider(
       create: (_) => RecipeCubit(),
       child: MaterialApp(
-        title: 'Yemek Tarifleri',
+        title: t.appTitle,
         locale: TranslationProvider.of(context).flutterLocale,
         supportedLocales: AppLocaleUtils.supportedLocales,
         localizationsDelegates: [
@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.orange),
           useMaterial3: true,
         ),
-        home: const RecipeListPage(),
+        home: const HomePage(),
       ),
     );
   }

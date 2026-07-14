@@ -2,23 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../cubits/recipe_cubit.dart';
 import '../models/recipe.dart';
-import '../services/api_service.dart';
 import '../i18n/strings.g.dart';
 import 'recipe_form_page.dart';
 import 'recipe_detail_page.dart';
 import 'category_list_page.dart';
 
-class RecipeListPage extends StatefulWidget {
-  const RecipeListPage({super.key});
+class SavedRecipesPage extends StatefulWidget {
+  const SavedRecipesPage({super.key});
 
   @override
-  State<RecipeListPage> createState() => _RecipeListPageState();
+  State<SavedRecipesPage> createState() => _SavedRecipesPageState();
 }
 
-class _RecipeListPageState extends State<RecipeListPage> {
-  final ApiService _apiService = ApiService();
+class _SavedRecipesPageState extends State<SavedRecipesPage> {
   final TextEditingController _searchController = TextEditingController();
-  bool _loading = false;
   String _searchQuery = '';
 
   void _navigateToForm({Recipe? recipe}) {
@@ -34,8 +31,8 @@ class _RecipeListPageState extends State<RecipeListPage> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: Text(t.recipeList.deleteTitle),
-        content: Text(t.recipeList.deleteContent(name: recipe.name)),
+        title: Text(t.saved.deleteTitle),
+        content: Text(t.saved.deleteContent(name: recipe.name)),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(false),
@@ -54,59 +51,6 @@ class _RecipeListPageState extends State<RecipeListPage> {
     }
   }
 
-  Future<void> _fetchRandomFromApi() async {
-    setState(() => _loading = true);
-    final meal = await _apiService.getRandomMeal();
-    if (!mounted) return;
-    setState(() => _loading = false);
-
-    if (meal != null) {
-      context.read<RecipeCubit>().addRecipe(meal);
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(t.recipeList.added(name: meal.name))),
-      );
-    } else {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(t.recipeList.fetchFailed)),
-      );
-    }
-  }
-
-  Future<void> _searchFromApi() async {
-    final query = _searchController.text.trim();
-    if (query.isEmpty) return;
-
-    setState(() => _loading = true);
-    final results = await _apiService.searchMeals(query);
-    if (!mounted) return;
-    setState(() => _loading = false);
-
-    if (results.isEmpty) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(t.recipeList.noResults(query: query))),
-      );
-      return;
-    }
-
-    final cubit = context.read<RecipeCubit>();
-    for (final recipe in results) {
-      if (cubit.getById(recipe.id) == null) {
-        cubit.addRecipe(recipe);
-      }
-    }
-    _searchController.clear();
-    setState(() => _searchQuery = '');
-    if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-          content: Text(t.recipeList
-              .addedMultiple(n: results.length, count: results.length))),
-    );
-  }
-
   void _showRandomLocal() {
     final random = context.read<RecipeCubit>().getRandom();
     if (random != null) {
@@ -115,7 +59,7 @@ class _RecipeListPageState extends State<RecipeListPage> {
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(t.recipeList.noRecipe)),
+        SnackBar(content: Text(t.saved.noRecipe)),
       );
     }
   }
@@ -137,12 +81,12 @@ class _RecipeListPageState extends State<RecipeListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(t.appTitle),
+        title: Text(t.saved.title),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         actions: [
           IconButton(
             icon: const Icon(Icons.category),
-            tooltip: t.recipeList.categoriesTooltip,
+            tooltip: t.saved.categoriesTooltip,
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(builder: (_) => const CategoryListPage()),
@@ -151,13 +95,8 @@ class _RecipeListPageState extends State<RecipeListPage> {
           ),
           IconButton(
             icon: const Icon(Icons.casino),
-            tooltip: t.recipeList.randomRecipeTooltip,
+            tooltip: t.saved.randomRecipeTooltip,
             onPressed: _showRandomLocal,
-          ),
-          IconButton(
-            icon: const Icon(Icons.cloud_download),
-            tooltip: t.recipeList.fetchFromApiTooltip,
-            onPressed: _loading ? null : _fetchRandomFromApi,
           ),
         ],
       ),
@@ -168,81 +107,60 @@ class _RecipeListPageState extends State<RecipeListPage> {
             children: [
               Padding(
                 padding: const EdgeInsets.fromLTRB(12, 8, 12, 4),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        controller: _searchController,
-                        decoration: InputDecoration(
-                          hintText: t.recipeList.searchHint,
-                          prefixIcon: const Icon(Icons.search),
-                          suffixIcon: _searchQuery.isNotEmpty
-                              ? IconButton(
-                                  icon: const Icon(Icons.clear),
-                                  onPressed: () {
-                                    _searchController.clear();
-                                    setState(() => _searchQuery = '');
-                                  },
-                                )
-                              : null,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12)),
-                          contentPadding: const EdgeInsets.symmetric(
-                              vertical: 12, horizontal: 12),
-                        ),
-                        onChanged: (value) {
-                          setState(() => _searchQuery = value.trim().toLowerCase());
-                        },
-                        onSubmitted: (_) => _searchFromApi(),
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    SizedBox(
-                      height: 48,
-                      child: ElevatedButton(
-                        onPressed: _loading ? null : _searchFromApi,
-                        child: _loading
-                            ? const SizedBox(
-                                width: 18,
-                                height: 18,
-                                child:
-                                    CircularProgressIndicator(strokeWidth: 2),
-                              )
-                            : Text(t.recipeList.searchApiButton),
-                      ),
-                    ),
-                  ],
+                child: TextField(
+                  controller: _searchController,
+                  decoration: InputDecoration(
+                    hintText: t.saved.searchHint,
+                    prefixIcon: const Icon(Icons.search),
+                    suffixIcon: _searchQuery.isNotEmpty
+                        ? IconButton(
+                            icon: const Icon(Icons.clear),
+                            onPressed: () {
+                              _searchController.clear();
+                              setState(() => _searchQuery = '');
+                            },
+                          )
+                        : null,
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12)),
+                    contentPadding: const EdgeInsets.symmetric(
+                        vertical: 12, horizontal: 12),
+                  ),
+                  onChanged: (value) {
+                    setState(
+                        () => _searchQuery = value.trim().toLowerCase());
+                  },
                 ),
               ),
-              _loading
-                  ? const LinearProgressIndicator()
-                  : const SizedBox.shrink(),
               Expanded(
                 child: recipes.isEmpty
                     ? Center(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(Icons.restaurant_menu,
-                                size: 64, color: Colors.grey.shade400),
-                            const SizedBox(height: 16),
-                            Text(
-                              t.recipeList.empty,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleMedium
-                                  ?.copyWith(
-                                    color: Colors.grey.shade600,
-                                  ),
-                            ),
-                            const SizedBox(height: 20),
-                            OutlinedButton.icon(
-                              onPressed:
-                                  _loading ? null : _fetchRandomFromApi,
-                              icon: const Icon(Icons.cloud_download),
-                              label: Text(t.recipeList.fetchFromApiButton),
-                            ),
-                          ],
+                        child: Padding(
+                          padding: const EdgeInsets.all(32),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(Icons.bookmark_border,
+                                  size: 64, color: Colors.grey.shade400),
+                              const SizedBox(height: 16),
+                              Text(
+                                t.saved.empty,
+                                textAlign: TextAlign.center,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleMedium
+                                    ?.copyWith(
+                                        color: Colors.grey.shade600),
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                t.saved.emptyHint,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.grey.shade500),
+                              ),
+                            ],
+                          ),
                         ),
                       )
                     : filtered.isEmpty
@@ -255,7 +173,7 @@ class _RecipeListPageState extends State<RecipeListPage> {
                                     color: Colors.grey.shade400),
                                 const SizedBox(height: 16),
                                 Text(
-                                  t.recipeList.noLocalResults,
+                                  t.saved.noResults,
                                   style: Theme.of(context)
                                       .textTheme
                                       .titleMedium
@@ -361,7 +279,7 @@ class _RecipeListPageState extends State<RecipeListPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _navigateToForm(),
-        tooltip: t.recipeList.newRecipeTooltip,
+        tooltip: t.saved.newRecipeTooltip,
         child: const Icon(Icons.add),
       ),
     );

@@ -38,12 +38,63 @@ class TranslationsEn with BaseTranslations<AppLocale, Translations> implements T
 
 	// Translations
 	@override String get appTitle => 'Food Recipes';
+	@override late final _Translations$nav$en nav = _Translations$nav$en._(_root);
+	@override late final _Translations$discover$en discover = _Translations$discover$en._(_root);
+	@override late final _Translations$saved$en saved = _Translations$saved$en._(_root);
 	@override late final _Translations$common$en common = _Translations$common$en._(_root);
-	@override late final _Translations$recipeList$en recipeList = _Translations$recipeList$en._(_root);
 	@override late final _Translations$recipeForm$en recipeForm = _Translations$recipeForm$en._(_root);
 	@override late final _Translations$categories$en categories = _Translations$categories$en._(_root);
 	@override late final _Translations$categoryRecipes$en categoryRecipes = _Translations$categoryRecipes$en._(_root);
 	@override late final _Translations$recipeDetail$en recipeDetail = _Translations$recipeDetail$en._(_root);
+}
+
+// Path: nav
+class _Translations$nav$en implements Translations$nav$tr {
+	_Translations$nav$en._(this._root);
+
+	final TranslationsEn _root; // ignore: unused_field
+
+	// Translations
+	@override String get discover => 'Discover';
+	@override String get saved => 'Saved';
+}
+
+// Path: discover
+class _Translations$discover$en implements Translations$discover$tr {
+	_Translations$discover$en._(this._root);
+
+	final TranslationsEn _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Discover';
+	@override String get searchHint => 'Search recipes in API...';
+	@override String get searchButton => 'Search';
+	@override String noResults({required Object query}) => 'No results found for ${query}.';
+	@override String get searchPrompt => 'Use the search field above to find recipes';
+	@override String saved({required Object name}) => '${name} saved!';
+	@override String get alreadySaved => 'This recipe is already saved';
+	@override String get saveTooltip => 'Save';
+	@override String get fetchFailed => 'Could not fetch recipe.';
+}
+
+// Path: saved
+class _Translations$saved$en implements Translations$saved$tr {
+	_Translations$saved$en._(this._root);
+
+	final TranslationsEn _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Saved Recipes';
+	@override String get searchHint => 'Search recipes...';
+	@override String get noResults => 'No recipes match your search.';
+	@override String get empty => 'No saved recipes yet';
+	@override String get emptyHint => 'Use the Discover tab to search and save recipes';
+	@override String get randomRecipeTooltip => 'Suggest Random Recipe';
+	@override String get categoriesTooltip => 'Categories';
+	@override String get newRecipeTooltip => 'New Recipe';
+	@override String get noRecipe => 'No recipes yet.';
+	@override String get deleteTitle => 'Delete Recipe';
+	@override String deleteContent({required Object name}) => 'Are you sure you want to delete ${name}?';
 }
 
 // Path: common
@@ -55,34 +106,6 @@ class _Translations$common$en implements Translations$common$tr {
 	// Translations
 	@override String get cancel => 'Cancel';
 	@override String get delete => 'Delete';
-}
-
-// Path: recipeList
-class _Translations$recipeList$en implements Translations$recipeList$tr {
-	_Translations$recipeList$en._(this._root);
-
-	final TranslationsEn _root; // ignore: unused_field
-
-	// Translations
-	@override String get searchHint => 'Search recipes...';
-	@override String get searchApiButton => 'Search API';
-	@override String get noLocalResults => 'No recipes match your search.';
-	@override String get empty => 'No recipes added yet';
-	@override String get fetchFromApiButton => 'Fetch Random Recipe from API';
-	@override String get randomRecipeTooltip => 'Suggest Random Recipe';
-	@override String get fetchFromApiTooltip => 'Fetch Random Recipe from API';
-	@override String get categoriesTooltip => 'Categories';
-	@override String get newRecipeTooltip => 'New Recipe';
-	@override String added({required Object name}) => '${name} added!';
-	@override String get fetchFailed => 'Could not fetch recipe.';
-	@override String noResults({required Object query}) => 'No results found for ${query}.';
-	@override String addedMultiple({required num n, required Object count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(n,
-		one: '${count} recipe added.',
-		other: '${count} recipes added.',
-	);
-	@override String get noRecipe => 'No recipes yet.';
-	@override String get deleteTitle => 'Delete Recipe';
-	@override String deleteContent({required Object name}) => 'Are you sure you want to delete ${name}?';
 }
 
 // Path: recipeForm
@@ -159,24 +182,30 @@ extension on TranslationsEn {
 	dynamic _flatMapFunction(String path) {
 		return switch (path) {
 			'appTitle' => 'Food Recipes',
+			'nav.discover' => 'Discover',
+			'nav.saved' => 'Saved',
+			'discover.title' => 'Discover',
+			'discover.searchHint' => 'Search recipes in API...',
+			'discover.searchButton' => 'Search',
+			'discover.noResults' => ({required Object query}) => 'No results found for ${query}.',
+			'discover.searchPrompt' => 'Use the search field above to find recipes',
+			'discover.saved' => ({required Object name}) => '${name} saved!',
+			'discover.alreadySaved' => 'This recipe is already saved',
+			'discover.saveTooltip' => 'Save',
+			'discover.fetchFailed' => 'Could not fetch recipe.',
+			'saved.title' => 'Saved Recipes',
+			'saved.searchHint' => 'Search recipes...',
+			'saved.noResults' => 'No recipes match your search.',
+			'saved.empty' => 'No saved recipes yet',
+			'saved.emptyHint' => 'Use the Discover tab to search and save recipes',
+			'saved.randomRecipeTooltip' => 'Suggest Random Recipe',
+			'saved.categoriesTooltip' => 'Categories',
+			'saved.newRecipeTooltip' => 'New Recipe',
+			'saved.noRecipe' => 'No recipes yet.',
+			'saved.deleteTitle' => 'Delete Recipe',
+			'saved.deleteContent' => ({required Object name}) => 'Are you sure you want to delete ${name}?',
 			'common.cancel' => 'Cancel',
 			'common.delete' => 'Delete',
-			'recipeList.searchHint' => 'Search recipes...',
-			'recipeList.searchApiButton' => 'Search API',
-			'recipeList.noLocalResults' => 'No recipes match your search.',
-			'recipeList.empty' => 'No recipes added yet',
-			'recipeList.fetchFromApiButton' => 'Fetch Random Recipe from API',
-			'recipeList.randomRecipeTooltip' => 'Suggest Random Recipe',
-			'recipeList.fetchFromApiTooltip' => 'Fetch Random Recipe from API',
-			'recipeList.categoriesTooltip' => 'Categories',
-			'recipeList.newRecipeTooltip' => 'New Recipe',
-			'recipeList.added' => ({required Object name}) => '${name} added!',
-			'recipeList.fetchFailed' => 'Could not fetch recipe.',
-			'recipeList.noResults' => ({required Object query}) => 'No results found for ${query}.',
-			'recipeList.addedMultiple' => ({required num n, required Object count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(n, one: '${count} recipe added.', other: '${count} recipes added.', ), 
-			'recipeList.noRecipe' => 'No recipes yet.',
-			'recipeList.deleteTitle' => 'Delete Recipe',
-			'recipeList.deleteContent' => ({required Object name}) => 'Are you sure you want to delete ${name}?',
 			'recipeForm.editTitle' => 'Edit Recipe',
 			'recipeForm.newTitle' => 'Add New Recipe',
 			'recipeForm.nameLabel' => 'Recipe Name',

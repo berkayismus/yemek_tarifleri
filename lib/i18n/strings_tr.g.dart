@@ -44,12 +44,107 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	/// tr: 'Yemek Tarifleri'
 	String get appTitle => 'Yemek Tarifleri';
 
+	late final Translations$nav$tr nav = Translations$nav$tr._(_root);
+	late final Translations$discover$tr discover = Translations$discover$tr._(_root);
+	late final Translations$saved$tr saved = Translations$saved$tr._(_root);
 	late final Translations$common$tr common = Translations$common$tr._(_root);
-	late final Translations$recipeList$tr recipeList = Translations$recipeList$tr._(_root);
 	late final Translations$recipeForm$tr recipeForm = Translations$recipeForm$tr._(_root);
 	late final Translations$categories$tr categories = Translations$categories$tr._(_root);
 	late final Translations$categoryRecipes$tr categoryRecipes = Translations$categoryRecipes$tr._(_root);
 	late final Translations$recipeDetail$tr recipeDetail = Translations$recipeDetail$tr._(_root);
+}
+
+// Path: nav
+class Translations$nav$tr {
+	Translations$nav$tr._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// tr: 'Keşfet'
+	String get discover => 'Keşfet';
+
+	/// tr: 'Kaydedilenler'
+	String get saved => 'Kaydedilenler';
+}
+
+// Path: discover
+class Translations$discover$tr {
+	Translations$discover$tr._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// tr: 'Keşfet'
+	String get title => 'Keşfet';
+
+	/// tr: 'API'de tarif ara...'
+	String get searchHint => 'API\'de tarif ara...';
+
+	/// tr: 'Ara'
+	String get searchButton => 'Ara';
+
+	/// tr: '$query için sonuç bulunamadı.'
+	String noResults({required Object query}) => '${query} için sonuç bulunamadı.';
+
+	/// tr: 'Yemek tarifi aramak için yukarıdaki alanı kullanın'
+	String get searchPrompt => 'Yemek tarifi aramak için yukarıdaki alanı kullanın';
+
+	/// tr: '$name kaydedildi!'
+	String saved({required Object name}) => '${name} kaydedildi!';
+
+	/// tr: 'Bu tarif zaten kaydedilmiş'
+	String get alreadySaved => 'Bu tarif zaten kaydedilmiş';
+
+	/// tr: 'Kaydet'
+	String get saveTooltip => 'Kaydet';
+
+	/// tr: 'Tarif alınamadı.'
+	String get fetchFailed => 'Tarif alınamadı.';
+}
+
+// Path: saved
+class Translations$saved$tr {
+	Translations$saved$tr._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// tr: 'Kaydedilenler'
+	String get title => 'Kaydedilenler';
+
+	/// tr: 'Tariflerde ara...'
+	String get searchHint => 'Tariflerde ara...';
+
+	/// tr: 'Aramanızla eşleşen tarif bulunamadı.'
+	String get noResults => 'Aramanızla eşleşen tarif bulunamadı.';
+
+	/// tr: 'Henüz kaydedilmiş tarif yok'
+	String get empty => 'Henüz kaydedilmiş tarif yok';
+
+	/// tr: 'Keşfet sekmesinden tarif arayıp kaydedebilirsiniz'
+	String get emptyHint => 'Keşfet sekmesinden tarif arayıp kaydedebilirsiniz';
+
+	/// tr: 'Rastgele Tarif Öner'
+	String get randomRecipeTooltip => 'Rastgele Tarif Öner';
+
+	/// tr: 'Kategoriler'
+	String get categoriesTooltip => 'Kategoriler';
+
+	/// tr: 'Yeni Tarif'
+	String get newRecipeTooltip => 'Yeni Tarif';
+
+	/// tr: 'Henüz hiç tarif yok.'
+	String get noRecipe => 'Henüz hiç tarif yok.';
+
+	/// tr: 'Tarifi Sil'
+	String get deleteTitle => 'Tarifi Sil';
+
+	/// tr: '$name tarifini silmek istediğinize emin misiniz?'
+	String deleteContent({required Object name}) => '${name} tarifini silmek istediğinize emin misiniz?';
 }
 
 // Path: common
@@ -65,66 +160,6 @@ class Translations$common$tr {
 
 	/// tr: 'Sil'
 	String get delete => 'Sil';
-}
-
-// Path: recipeList
-class Translations$recipeList$tr {
-	Translations$recipeList$tr._(this._root);
-
-	final Translations _root; // ignore: unused_field
-
-	// Translations
-
-	/// tr: 'Tariflerde ara...'
-	String get searchHint => 'Tariflerde ara...';
-
-	/// tr: 'API'de Ara'
-	String get searchApiButton => 'API\'de Ara';
-
-	/// tr: 'Aramanızla eşleşen tarif bulunamadı.'
-	String get noLocalResults => 'Aramanızla eşleşen tarif bulunamadı.';
-
-	/// tr: 'Henüz tarif eklenmedi'
-	String get empty => 'Henüz tarif eklenmedi';
-
-	/// tr: 'API'den Rastgele Tarif Getir'
-	String get fetchFromApiButton => 'API\'den Rastgele Tarif Getir';
-
-	/// tr: 'Rastgele Tarif Öner'
-	String get randomRecipeTooltip => 'Rastgele Tarif Öner';
-
-	/// tr: 'API'den Rastgele Tarif Getir'
-	String get fetchFromApiTooltip => 'API\'den Rastgele Tarif Getir';
-
-	/// tr: 'Kategoriler'
-	String get categoriesTooltip => 'Kategoriler';
-
-	/// tr: 'Yeni Tarif'
-	String get newRecipeTooltip => 'Yeni Tarif';
-
-	/// tr: '$name eklendi!'
-	String added({required Object name}) => '${name} eklendi!';
-
-	/// tr: 'Tarif alınamadı.'
-	String get fetchFailed => 'Tarif alınamadı.';
-
-	/// tr: '$query için sonuç bulunamadı.'
-	String noResults({required Object query}) => '${query} için sonuç bulunamadı.';
-
-	/// tr: '(one) {$count tarif eklendi.} (other) {$count tarif eklendi.}'
-	String addedMultiple({required num n, required Object count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('tr'))(n,
-		one: '${count} tarif eklendi.',
-		other: '${count} tarif eklendi.',
-	);
-
-	/// tr: 'Henüz hiç tarif yok.'
-	String get noRecipe => 'Henüz hiç tarif yok.';
-
-	/// tr: 'Tarifi Sil'
-	String get deleteTitle => 'Tarifi Sil';
-
-	/// tr: '$name tarifini silmek istediğinize emin misiniz?'
-	String deleteContent({required Object name}) => '${name} tarifini silmek istediğinize emin misiniz?';
 }
 
 // Path: recipeForm
@@ -253,24 +288,30 @@ extension on Translations {
 	dynamic _flatMapFunction(String path) {
 		return switch (path) {
 			'appTitle' => 'Yemek Tarifleri',
+			'nav.discover' => 'Keşfet',
+			'nav.saved' => 'Kaydedilenler',
+			'discover.title' => 'Keşfet',
+			'discover.searchHint' => 'API\'de tarif ara...',
+			'discover.searchButton' => 'Ara',
+			'discover.noResults' => ({required Object query}) => '${query} için sonuç bulunamadı.',
+			'discover.searchPrompt' => 'Yemek tarifi aramak için yukarıdaki alanı kullanın',
+			'discover.saved' => ({required Object name}) => '${name} kaydedildi!',
+			'discover.alreadySaved' => 'Bu tarif zaten kaydedilmiş',
+			'discover.saveTooltip' => 'Kaydet',
+			'discover.fetchFailed' => 'Tarif alınamadı.',
+			'saved.title' => 'Kaydedilenler',
+			'saved.searchHint' => 'Tariflerde ara...',
+			'saved.noResults' => 'Aramanızla eşleşen tarif bulunamadı.',
+			'saved.empty' => 'Henüz kaydedilmiş tarif yok',
+			'saved.emptyHint' => 'Keşfet sekmesinden tarif arayıp kaydedebilirsiniz',
+			'saved.randomRecipeTooltip' => 'Rastgele Tarif Öner',
+			'saved.categoriesTooltip' => 'Kategoriler',
+			'saved.newRecipeTooltip' => 'Yeni Tarif',
+			'saved.noRecipe' => 'Henüz hiç tarif yok.',
+			'saved.deleteTitle' => 'Tarifi Sil',
+			'saved.deleteContent' => ({required Object name}) => '${name} tarifini silmek istediğinize emin misiniz?',
 			'common.cancel' => 'İptal',
 			'common.delete' => 'Sil',
-			'recipeList.searchHint' => 'Tariflerde ara...',
-			'recipeList.searchApiButton' => 'API\'de Ara',
-			'recipeList.noLocalResults' => 'Aramanızla eşleşen tarif bulunamadı.',
-			'recipeList.empty' => 'Henüz tarif eklenmedi',
-			'recipeList.fetchFromApiButton' => 'API\'den Rastgele Tarif Getir',
-			'recipeList.randomRecipeTooltip' => 'Rastgele Tarif Öner',
-			'recipeList.fetchFromApiTooltip' => 'API\'den Rastgele Tarif Getir',
-			'recipeList.categoriesTooltip' => 'Kategoriler',
-			'recipeList.newRecipeTooltip' => 'Yeni Tarif',
-			'recipeList.added' => ({required Object name}) => '${name} eklendi!',
-			'recipeList.fetchFailed' => 'Tarif alınamadı.',
-			'recipeList.noResults' => ({required Object query}) => '${query} için sonuç bulunamadı.',
-			'recipeList.addedMultiple' => ({required num n, required Object count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('tr'))(n, one: '${count} tarif eklendi.', other: '${count} tarif eklendi.', ), 
-			'recipeList.noRecipe' => 'Henüz hiç tarif yok.',
-			'recipeList.deleteTitle' => 'Tarifi Sil',
-			'recipeList.deleteContent' => ({required Object name}) => '${name} tarifini silmek istediğinize emin misiniz?',
 			'recipeForm.editTitle' => 'Tarifi Düzenle',
 			'recipeForm.newTitle' => 'Yeni Tarif Ekle',
 			'recipeForm.nameLabel' => 'Yemek Adı',

@@ -1,31 +1,40 @@
 {
   "appTitle": "Food Recipes",
 
-  "common": {
-    "cancel": "Cancel",
-    "delete": "Delete"
+  "nav": {
+    "discover": "Discover",
+    "saved": "Saved"
   },
 
-  "recipeList": {
+  "discover": {
+    "title": "Discover",
+    "searchHint": "Search recipes in API...",
+    "searchButton": "Search",
+    "noResults": "No results found for $query.",
+    "searchPrompt": "Use the search field above to find recipes",
+    "saved": "$name saved!",
+    "alreadySaved": "This recipe is already saved",
+    "saveTooltip": "Save",
+    "fetchFailed": "Could not fetch recipe."
+  },
+
+  "saved": {
+    "title": "Saved Recipes",
     "searchHint": "Search recipes...",
-    "searchApiButton": "Search API",
-    "noLocalResults": "No recipes match your search.",
-    "empty": "No recipes added yet",
-    "fetchFromApiButton": "Fetch Random Recipe from API",
+    "noResults": "No recipes match your search.",
+    "empty": "No saved recipes yet",
+    "emptyHint": "Use the Discover tab to search and save recipes",
     "randomRecipeTooltip": "Suggest Random Recipe",
-    "fetchFromApiTooltip": "Fetch Random Recipe from API",
     "categoriesTooltip": "Categories",
     "newRecipeTooltip": "New Recipe",
-    "added": "$name added!",
-    "fetchFailed": "Could not fetch recipe.",
-    "noResults": "No results found for $query.",
-    "addedMultiple": {
-      "one": "$count recipe added.",
-      "other": "$count recipes added."
-    },
     "noRecipe": "No recipes yet.",
     "deleteTitle": "Delete Recipe",
     "deleteContent": "Are you sure you want to delete $name?"
+  },
+
+  "common": {
+    "cancel": "Cancel",
+    "delete": "Delete"
   },
 
   "recipeForm": {

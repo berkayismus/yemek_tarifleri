@@ -1,31 +1,40 @@
 {
   "appTitle": "Yemek Tarifleri",
 
-  "common": {
-    "cancel": "İptal",
-    "delete": "Sil"
+  "nav": {
+    "discover": "Keşfet",
+    "saved": "Kaydedilenler"
   },
 
-  "recipeList": {
+  "discover": {
+    "title": "Keşfet",
+    "searchHint": "API'de tarif ara...",
+    "searchButton": "Ara",
+    "noResults": "$query için sonuç bulunamadı.",
+    "searchPrompt": "Yemek tarifi aramak için yukarıdaki alanı kullanın",
+    "saved": "$name kaydedildi!",
+    "alreadySaved": "Bu tarif zaten kaydedilmiş",
+    "saveTooltip": "Kaydet",
+    "fetchFailed": "Tarif alınamadı."
+  },
+
+  "saved": {
+    "title": "Kaydedilenler",
     "searchHint": "Tariflerde ara...",
-    "searchApiButton": "API'de Ara",
-    "noLocalResults": "Aramanızla eşleşen tarif bulunamadı.",
-    "empty": "Henüz tarif eklenmedi",
-    "fetchFromApiButton": "API'den Rastgele Tarif Getir",
+    "noResults": "Aramanızla eşleşen tarif bulunamadı.",
+    "empty": "Henüz kaydedilmiş tarif yok",
+    "emptyHint": "Keşfet sekmesinden tarif arayıp kaydedebilirsiniz",
     "randomRecipeTooltip": "Rastgele Tarif Öner",
-    "fetchFromApiTooltip": "API'den Rastgele Tarif Getir",
     "categoriesTooltip": "Kategoriler",
     "newRecipeTooltip": "Yeni Tarif",
-    "added": "$name eklendi!",
-    "fetchFailed": "Tarif alınamadı.",
-    "noResults": "$query için sonuç bulunamadı.",
-    "addedMultiple": {
-      "one": "$count tarif eklendi.",
-      "other": "$count tarif eklendi."
-    },
     "noRecipe": "Henüz hiç tarif yok.",
     "deleteTitle": "Tarifi Sil",
     "deleteContent": "$name tarifini silmek istediğinize emin misiniz?"
+  },
+
+  "common": {
+    "cancel": "İptal",
+    "delete": "Sil"
   },
 
   "recipeForm": {
