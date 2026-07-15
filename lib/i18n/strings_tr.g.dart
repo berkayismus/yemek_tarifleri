@@ -41,8 +41,8 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 
 	// Translations
 
-	/// tr: 'Yemek Tarifleri'
-	String get appTitle => 'Yemek Tarifleri';
+	/// tr: 'Cookmark'
+	String get appTitle => 'Cookmark';
 
 	late final Translations$nav$tr nav = Translations$nav$tr._(_root);
 	late final Translations$discover$tr discover = Translations$discover$tr._(_root);
@@ -308,7 +308,7 @@ class Translations$recipeDetail$tr {
 extension on Translations {
 	dynamic _flatMapFunction(String path) {
 		return switch (path) {
-			'appTitle' => 'Yemek Tarifleri',
+			'appTitle' => 'Cookmark',
 			'nav.discover' => 'Keşfet',
 			'nav.saved' => 'Kaydedilenler',
 			'discover.title' => 'Keşfet',

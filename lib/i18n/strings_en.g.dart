@@ -37,7 +37,7 @@ class TranslationsEn with BaseTranslations<AppLocale, Translations> implements T
 	TranslationsEn $copyWith({TranslationMetadata<AppLocale, Translations>? meta}) => TranslationsEn(meta: meta ?? this.$meta);
 
 	// Translations
-	@override String get appTitle => 'Food Recipes';
+	@override String get appTitle => 'Cookmark';
 	@override late final _Translations$nav$en nav = _Translations$nav$en._(_root);
 	@override late final _Translations$discover$en discover = _Translations$discover$en._(_root);
 	@override late final _Translations$saved$en saved = _Translations$saved$en._(_root);
@@ -188,7 +188,7 @@ class _Translations$recipeDetail$en implements Translations$recipeDetail$tr {
 extension on TranslationsEn {
 	dynamic _flatMapFunction(String path) {
 		return switch (path) {
-			'appTitle' => 'Food Recipes',
+			'appTitle' => 'Cookmark',
 			'nav.discover' => 'Discover',
 			'nav.saved' => 'Saved',
 			'discover.title' => 'Discover',

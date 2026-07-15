@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 
-import 'package:yemek_tarifleri/app.dart';
+import 'package:cookmark/app.dart';
 
 void main() {
   setUp(() async {

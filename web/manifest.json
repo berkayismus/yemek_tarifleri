@@ -1,6 +1,6 @@
 {
-    "name": "yemek_tarifleri",
-    "short_name": "yemek_tarifleri",
+    "name": "Cookmark",
+    "short_name": "Cookmark",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
