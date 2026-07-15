@@ -78,6 +78,10 @@
 
   "recipeDetail": {
     "ingredients": "Malzemeler",
-    "instructions": "Hazırlanışı"
+    "instructions": "Hazırlanışı",
+    "notFound": "Tarif bulunamadı",
+    "share": "Paylaş",
+    "shareSubject": "$name tarifi",
+    "copiedToClipboard": "Bağlantı panoya kopyalandı"
   }
 }

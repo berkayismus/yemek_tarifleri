@@ -174,6 +174,10 @@ class _Translations$recipeDetail$en implements Translations$recipeDetail$tr {
 	// Translations
 	@override String get ingredients => 'Ingredients';
 	@override String get instructions => 'Instructions';
+	@override String get notFound => 'Recipe not found';
+	@override String get share => 'Share';
+	@override String shareSubject({required Object name}) => '${name} recipe';
+	@override String get copiedToClipboard => 'Link copied to clipboard';
 }
 
 /// The flat map containing all translations for locale <en>.
@@ -238,6 +242,10 @@ extension on TranslationsEn {
 			'categoryRecipes.deleteContent' => ({required Object name}) => 'Are you sure you want to delete ${name}?',
 			'recipeDetail.ingredients' => 'Ingredients',
 			'recipeDetail.instructions' => 'Instructions',
+			'recipeDetail.notFound' => 'Recipe not found',
+			'recipeDetail.share' => 'Share',
+			'recipeDetail.shareSubject' => ({required Object name}) => '${name} recipe',
+			'recipeDetail.copiedToClipboard' => 'Link copied to clipboard',
 			_ => null,
 		};
 	}

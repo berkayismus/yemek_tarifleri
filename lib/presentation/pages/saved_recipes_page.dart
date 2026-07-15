@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import '../cubit/recipe_cubit.dart';
 import '../../domain/entities/recipe.dart';
 import '../../i18n/strings.g.dart';
-import '../../core/utils/slug.dart';
 import '../widgets/language_switch.dart';
 
 class SavedRecipesPage extends StatefulWidget {
@@ -76,7 +75,7 @@ class _SavedRecipesPageState extends State<SavedRecipesPage> {
   void _showRandomLocal() {
     final random = context.read<RecipeCubit>().getRandom();
     if (random != null) {
-      context.go('/recipe/${recipeSlug(random.name)}', extra: random);
+      context.go('/recipe/${random.id}', extra: random);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(t.saved.noRecipe)),
@@ -228,9 +227,9 @@ class _SavedRecipesPageState extends State<SavedRecipesPage> {
                               return Card(
                                 clipBehavior: Clip.antiAlias,
                                 child: InkWell(
-                                  onTap: () => context.go(
-                                      '/recipe/${recipeSlug(recipe.name)}',
-                                      extra: recipe),
+                                   onTap: () => context.go(
+                                       '/recipe/${recipe.id}',
+                                       extra: recipe),
                                   child: Padding(
                                     padding: const EdgeInsets.all(12),
                                     child: Row(

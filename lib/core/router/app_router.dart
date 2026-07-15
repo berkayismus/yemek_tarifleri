@@ -1,9 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../domain/entities/recipe.dart';
 import '../../presentation/pages/discover_page.dart';
 import '../../presentation/pages/saved_recipes_page.dart';
-import '../../presentation/pages/recipe_detail_page.dart';
+import '../../presentation/pages/recipe_detail_shell.dart';
 import '../../presentation/pages/recipe_form_page.dart';
 import '../../presentation/pages/category_list_page.dart';
 import '../../presentation/pages/category_recipe_list_page.dart';
@@ -35,15 +34,11 @@ final appRouter = GoRouter(
       ],
     ),
     GoRoute(
-      path: '/recipe/:slug',
+      path: '/recipe/:id',
       builder: (_, state) {
+        final recipeId = state.pathParameters['id']!;
         final recipe = state.extra as Recipe?;
-        if (recipe == null) {
-          return const Scaffold(
-            body: Center(child: Text('Tarif bulunamadı')),
-          );
-        }
-        return RecipeDetailPage(recipe: recipe);
+        return RecipeDetailShell(recipeId: recipeId, recipe: recipe);
       },
     ),
     GoRoute(

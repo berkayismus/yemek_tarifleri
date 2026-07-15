@@ -70,4 +70,10 @@ class RecipeCubit extends HydratedCubit<List<Recipe>> {
       _repository.searchRecipes(query);
 
   Future<Recipe?> getRandomApiRecipe() => _repository.getRandomRecipe();
+
+  Future<Recipe?> resolveRecipe(String id) {
+    final local = getById(id);
+    if (local != null) return Future.value(local);
+    return _repository.lookupById(id);
+  }
 }

@@ -78,6 +78,10 @@
 
   "recipeDetail": {
     "ingredients": "Ingredients",
-    "instructions": "Instructions"
+    "instructions": "Instructions",
+    "notFound": "Recipe not found",
+    "share": "Share",
+    "shareSubject": "$name recipe",
+    "copiedToClipboard": "Link copied to clipboard"
   }
 }

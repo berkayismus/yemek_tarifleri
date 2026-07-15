@@ -13,4 +13,7 @@ class RecipeRepositoryImpl implements RecipeRepository {
 
   @override
   Future<Recipe?> getRandomRecipe() => _remoteDataSource.getRandomMeal();
+
+  @override
+  Future<Recipe?> lookupById(String id) => _remoteDataSource.lookupMealById(id);
 }

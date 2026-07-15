@@ -37,6 +37,22 @@ class RecipeRemoteDataSource {
     }
   }
 
+  Future<Recipe?> lookupMealById(String id) async {
+    try {
+      final response =
+          await http.get(Uri.parse('$_baseUrl/lookup.php?i=$id'));
+      if (response.statusCode != 200) return null;
+
+      final data = jsonDecode(response.body);
+      final meals = data['meals'] as List?;
+      if (meals == null || meals.isEmpty) return null;
+
+      return _parseMeal(meals.first);
+    } catch (_) {
+      return null;
+    }
+  }
+
   RecipeModel _parseMeal(Map<String, dynamic> m) {
     final ingredients = StringBuffer();
     for (int i = 1; i <= 20; i++) {

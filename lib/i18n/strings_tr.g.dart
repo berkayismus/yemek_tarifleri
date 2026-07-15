@@ -286,6 +286,18 @@ class Translations$recipeDetail$tr {
 
 	/// tr: 'Hazırlanışı'
 	String get instructions => 'Hazırlanışı';
+
+	/// tr: 'Tarif bulunamadı'
+	String get notFound => 'Tarif bulunamadı';
+
+	/// tr: 'Paylaş'
+	String get share => 'Paylaş';
+
+	/// tr: '$name tarifi'
+	String shareSubject({required Object name}) => '${name} tarifi';
+
+	/// tr: 'Bağlantı panoya kopyalandı'
+	String get copiedToClipboard => 'Bağlantı panoya kopyalandı';
 }
 
 /// The flat map containing all translations for locale <tr>.
@@ -350,6 +362,10 @@ extension on Translations {
 			'categoryRecipes.deleteContent' => ({required Object name}) => '${name} tarifini silmek istediğinize emin misiniz?',
 			'recipeDetail.ingredients' => 'Malzemeler',
 			'recipeDetail.instructions' => 'Hazırlanışı',
+			'recipeDetail.notFound' => 'Tarif bulunamadı',
+			'recipeDetail.share' => 'Paylaş',
+			'recipeDetail.shareSubject' => ({required Object name}) => '${name} tarifi',
+			'recipeDetail.copiedToClipboard' => 'Bağlantı panoya kopyalandı',
 			_ => null,
 		};
 	}

@@ -6,7 +6,6 @@ import '../cubit/discover_state.dart';
 import '../../domain/entities/recipe.dart';
 import '../../data/datasources/recipe_remote_datasource.dart';
 import '../../i18n/strings.g.dart';
-import '../../core/utils/slug.dart';
 import '../widgets/language_switch.dart';
 
 class DiscoverPage extends StatefulWidget {
@@ -184,7 +183,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
                       final isSaved = cubit.getById(recipe.id) != null;
                       return GestureDetector(
                         onTap: () => context.go(
-                            '/recipe/${recipeSlug(recipe.name)}',
+                            '/recipe/${recipe.id}',
                             extra: recipe),
                         child: Card(
                           clipBehavior: Clip.antiAlias,
