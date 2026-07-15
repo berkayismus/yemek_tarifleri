@@ -36,6 +36,7 @@ dependencies:
   hydrated_bloc: ^11.0.0
   flutter_bloc: ^9.1.1
   path_provider: ^2.1.6
+  shared_preferences: ^2.5.3
   slang: ^4.18.0
   slang_flutter: ^4.18.0
   flutter_localizations:

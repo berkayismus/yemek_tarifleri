@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'i18n/strings.g.dart';
 import 'app.dart';
 
@@ -21,6 +22,13 @@ void main() async {
           ),
   );
 
-  LocaleSettings.useDeviceLocale();
+  final prefs = await SharedPreferences.getInstance();
+  final savedLocale = prefs.getString('app_locale');
+  if (savedLocale != null) {
+    LocaleSettings.setLocaleRaw(savedLocale);
+  } else {
+    LocaleSettings.useDeviceLocale();
+  }
+
   runApp(TranslationProvider(child: const App()));
 }
